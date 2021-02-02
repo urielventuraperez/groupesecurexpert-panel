@@ -5,11 +5,8 @@ import moment from 'moment';
 import {
   Avatar,
   Box,
-  Button,
   Card,
-  CardActions,
   CardContent,
-  Divider,
   Typography,
   makeStyles
 } from '@material-ui/core';
@@ -71,16 +68,6 @@ const Profile = ({ className, ...rest }) => {
           </Typography>
         </Box>
       </CardContent>
-      <Divider />
-      <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-        >
-          Upload picture
-        </Button>
-      </CardActions>
     </Card>
   );
 };

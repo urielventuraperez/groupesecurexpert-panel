@@ -25,8 +25,8 @@ import NavItem from './NavItem';
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
+  jobTitle: 'Gomez',
+  name: 'Paulo'
 };
 
 const items = [
@@ -113,9 +113,10 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
           to="/app/account"
-        />
+        >
+          PG
+        </Avatar>
         <Typography
           className={classes.name}
           color="textPrimary"
