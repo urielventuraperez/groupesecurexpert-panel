@@ -1,49 +1,60 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
-import TopBar from './TopBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import TopBar from '../DashboardLayout/';
+import Hidden from '@material-ui/core/Hidden';
 
-const useStyles = makeStyles((theme) => ({
+const drawerWidth = 240;
+
+const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.default,
     display: 'flex',
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%'
   },
-  wrapper: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-    paddingTop: 64
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
-  contentContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden'
+  appBar: {
+    marginLeft: drawerWidth,
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+    },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
   },
   content: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto'
-  }
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
 }));
 
-const MainLayout = () => {
+const MainLayout = (props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
+      <CssBaseline />
       <TopBar />
-      <div className={classes.wrapper}>
-        <div className={classes.contentContainer}>
-          <div className={classes.content}>
-            <Outlet />
-          </div>
-        </div>
-      </div>
+      <Hidden mdDown>
+      <nav className={classes.drawer}>
+      </nav>
+      </Hidden>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+            {props.content}
+      </main>
     </div>
   );
-};
+}
 
 export default MainLayout;
