@@ -5,7 +5,7 @@ import {
 
 const useStyles = makeStyles(() => ({
   logo: {
-    width: 40,
+    width: props=>props.width,
   }
 }));
 
@@ -21,5 +21,9 @@ const Logo = (props) => {
     />
   );
 };
+
+Logo.DefaultProps = {
+  width: 40,
+}
 
 export default Logo;
