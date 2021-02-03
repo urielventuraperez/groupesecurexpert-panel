@@ -10,20 +10,20 @@ import {
   makeStyles,
   colors
 } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import FlagIcon from '@material-ui/icons/Flag';
 
 const useStyles = makeStyles(() => ({
   root: {
     height: '100%'
   },
   avatar: {
-    backgroundColor: colors.indigo[600],
+    backgroundColor: colors.orange[600],
     height: 56,
     width: 56
   }
 }));
 
-const TotalProfit = ({ className, ...rest }) => {
+const Country = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -43,18 +43,18 @@ const TotalProfit = ({ className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              TOTAL PROFIT
+              COUNTRIES
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              $23,200
+              75.5%
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <AttachMoneyIcon />
+              <FlagIcon />
             </Avatar>
           </Grid>
         </Grid>
@@ -63,8 +63,8 @@ const TotalProfit = ({ className, ...rest }) => {
   );
 };
 
-TotalProfit.propTypes = {
+Country.propTypes = {
   className: PropTypes.string
 };
 
-export default TotalProfit;
+export default Country;

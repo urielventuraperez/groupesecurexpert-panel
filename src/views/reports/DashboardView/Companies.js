@@ -3,29 +3,34 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
   Avatar,
-  Box,
   Card,
   CardContent,
   Grid,
-  LinearProgress,
   Typography,
-  makeStyles,
-  colors
+  colors,
+  makeStyles
 } from '@material-ui/core';
-import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%'
   },
   avatar: {
-    backgroundColor: colors.orange[600],
+    backgroundColor: colors.red[600],
     height: 56,
     width: 56
+  },
+  differenceIcon: {
+    color: colors.red[900]
+  },
+  differenceValue: {
+    color: colors.red[900],
+    marginRight: theme.spacing(1)
   }
 }));
 
-const TasksProgress = ({ className, ...rest }) => {
+const Company = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -45,34 +50,28 @@ const TasksProgress = ({ className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              TASKS PROGRESS
+              COMPANIES
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              75.5%
+              $24,000
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <InsertChartIcon />
+              <ApartmentIcon />
             </Avatar>
           </Grid>
         </Grid>
-        <Box mt={3}>
-          <LinearProgress
-            value={75.5}
-            variant="determinate"
-          />
-        </Box>
       </CardContent>
     </Card>
   );
 };
 
-TasksProgress.propTypes = {
+Company.propTypes = {
   className: PropTypes.string
 };
 
-export default TasksProgress;
+export default Company;
