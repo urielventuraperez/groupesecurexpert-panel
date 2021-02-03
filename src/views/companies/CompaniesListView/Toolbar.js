@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -12,6 +12,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
+import { connect } from 'react-redux';
+import { filterCompanies } from 'src/redux/actions/companies';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -23,8 +25,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className, filterCompanies, ...rest }) => {
   const classes = useStyles();
+
+  const [searchValue, setSearchValue] = useState('');
+
+  useEffect(()=>{
+    filterCompanies(searchValue);
+  }, [searchValue])
 
   return (
     <div
@@ -60,8 +68,10 @@ const Toolbar = ({ className, ...rest }) => {
                     </InputAdornment>
                   )
                 }}
-                placeholder="Search product"
+                placeholder="Search company"
                 variant="outlined"
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
               />
             </Box>
           </CardContent>
@@ -75,4 +85,12 @@ Toolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default Toolbar;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    filterCompanies: (name) => {
+      dispatch(filterCompanies(name));
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Toolbar);

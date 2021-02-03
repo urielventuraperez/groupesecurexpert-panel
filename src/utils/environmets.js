@@ -1,0 +1,1 @@
+export const ENV = 'https://rickandmortyapi.com/api';

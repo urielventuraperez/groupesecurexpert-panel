@@ -1,0 +1,2 @@
+export const VIEW_VISITORS = 'VIEW_VISITORS';
+export const IS_LOAD_VISITORS = 'IS_LOAD_VISITORS';
