@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
 
 function Copyright() {
@@ -60,6 +61,7 @@ export default function SignInSide() {
   const classes = useStyles();
 
   return (
+    <Page title="Login Page">
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -110,5 +112,6 @@ export default function SignInSide() {
         </div>
       </Grid>
     </Grid>
+    </Page>
   );
 }

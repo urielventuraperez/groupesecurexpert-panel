@@ -11,6 +11,7 @@ import {
   SvgIcon,
   makeStyles
 } from '@material-ui/core';
+import CompanyDialog from './Form';
 import { Search as SearchIcon } from 'react-feather';
 import { connect } from 'react-redux';
 import { filterCompanies } from 'src/redux/actions/companies';
@@ -29,6 +30,15 @@ const Toolbar = ({ className, filterCompanies, ...rest }) => {
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(()=>{
     filterCompanies(searchValue);
@@ -46,6 +56,7 @@ const Toolbar = ({ className, filterCompanies, ...rest }) => {
         <Button
           color="primary"
           variant="contained"
+          onClick={handleClickOpen}
         >
           Add Company
         </Button>
@@ -77,6 +88,7 @@ const Toolbar = ({ className, filterCompanies, ...rest }) => {
           </CardContent>
         </Card>
       </Box>
+      <CompanyDialog open={open} close={handleClose}/>
     </div>
   );
 };

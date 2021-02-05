@@ -29,13 +29,12 @@ const CompaniesListView = props => {
   const classes = useStyles();
 
   return (
-    <Page className={classes.root} title="Products">
+    <Page className={classes.root} title="Companies">
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
           <Grid container spacing={3}>
-            { console.log(filterCompanies.length) }
-            {filterCompanies.length === 0
+              {filterCompanies.length === 0
               ? companies.map(company => (
                   <Grid item key={company.id} lg={4} md={6} xs={12}>
                     <ProductCard

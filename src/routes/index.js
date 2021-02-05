@@ -8,6 +8,7 @@ import DashboardView from 'src/views/reports/DashboardView';
 import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import CompaniesListView from 'src/views/companies/CompaniesListView';
+import CompanyView from 'src/views/companies/company';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 
@@ -18,6 +19,7 @@ const RenderRoutes = (
     <Route exact path='/app/account' component={AccountView}></Route>
     <Route exact path='/app/customers' component={CustomerListView}></Route>
     <Route exact path='/app/companies' component={CompaniesListView}></Route>
+    <Route exact path='/app/company/:slug' component={CompanyView}></Route>
     <Route exact path='/app/settings' component={SettingsView}></Route>
     <Route exact path='/login' component={LoginView}></Route>
     <Route exact path='/register' component={RegisterView}></Route>

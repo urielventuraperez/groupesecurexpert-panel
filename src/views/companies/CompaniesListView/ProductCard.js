@@ -9,10 +9,11 @@ import {
   Divider,
   Grid,
   Typography,
+  Button,
   makeStyles
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import { Link } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,26 +86,20 @@ const ProductCard = ({ className, product, ...rest }) => {
               display="inline"
               variant="body2"
             >
-              Updated 2hr ago
+              Added at
             </Typography>
           </Grid>
           <Grid
             className={classes.statsItem}
             item
           >
-            <GetAppIcon
-              className={classes.statsIcon}
-              color="action"
-            />
-            <Typography
-              color="textSecondary"
-              display="inline"
-              variant="body2"
-            >
-              {product.totalDownloads}
-              {' '}
-              Downloads
-            </Typography>
+            <Button
+              component={Link}
+              to={`/app/company/test`}
+              color="primary"
+            > 
+            View more
+            </Button>
           </Grid>
         </Grid>
       </Box>
