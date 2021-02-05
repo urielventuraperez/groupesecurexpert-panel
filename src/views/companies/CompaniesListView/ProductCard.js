@@ -95,7 +95,7 @@ const ProductCard = ({ className, product, ...rest }) => {
           >
             <Button
               component={Link}
-              to={`/app/company/test`}
+              to={`/app/company/${product.id}`}
               color="primary"
             > 
             View more

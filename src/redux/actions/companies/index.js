@@ -28,7 +28,7 @@ export function filterCompanies(input) {
 export function getCompany(id) {
   return function(dispatch) {
     dispatch({type: IS_LOAD_COMPANIES});
-    return fetch(`${ENV}/characters/${id}`)
+    return fetch(`${ENV}/character/${id}`)
     .then(response => response.json())
     .then( json => {
       return dispatch({
