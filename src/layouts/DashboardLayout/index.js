@@ -11,11 +11,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardLayout = () => {
+const DashboardLayout = (props) => {
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
+    props.isLogged && 
     <div className={classes.root}>
       <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
       <NavBar
