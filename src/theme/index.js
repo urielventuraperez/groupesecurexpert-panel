@@ -13,7 +13,7 @@ const theme = createMuiTheme({
       main: colors.blue[700]
     },
     secondary: {
-      main: colors.grey[500]
+      main: colors.amber[300]
     },
     text: {
       primary: colors.blueGrey[700],

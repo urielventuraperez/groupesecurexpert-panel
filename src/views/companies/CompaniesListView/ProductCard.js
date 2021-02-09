@@ -59,12 +59,12 @@ const ProductCard = ({ className, product, ...rest }) => {
       <CardHeader
         action={
           <Box>
-          <IconButton onClick={()=>(setActive(!isActive))} aria-label="settings">
+          <IconButton color="secondary" onClick={()=>(setActive(!isActive))} aria-label="settings">
             {
               isActive ? <VisibilityIcon /> : <VisibilityOffIcon />
             }
           </IconButton>
-          <IconButton aria-label="delete">
+          <IconButton color="secondary" aria-label="delete">
             <DeleteIcon onClick={handleClickOpen} />
           </IconButton>
           </Box>
