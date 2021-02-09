@@ -11,6 +11,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import {
   AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
@@ -54,6 +55,11 @@ const items = [
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
+  },
+  {
+    href: '/app/faq',
+    icon: HelpOutlineOutlinedIcon,
+    title: 'Faq'
   },
   {
     href: '/login',

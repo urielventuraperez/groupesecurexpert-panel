@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Avatar,
   Box,
   Card,
+  CardHeader,
+  IconButton,
   CardContent,
   Divider,
   Grid,
@@ -12,7 +14,12 @@ import {
   Button,
   makeStyles
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import DeleteCompany from './DeleteCompany';
+
 import { Link } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
@@ -32,11 +39,37 @@ const useStyles = makeStyles((theme) => ({
 const ProductCard = ({ className, product, ...rest }) => {
   const classes = useStyles();
 
+  const [isActive, setActive] = useState(true);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
+      <CardHeader
+        action={
+          <Box>
+          <IconButton onClick={()=>(setActive(!isActive))} aria-label="settings">
+            {
+              isActive ? <VisibilityIcon /> : <VisibilityOffIcon />
+            }
+          </IconButton>
+          <IconButton aria-label="delete">
+            <DeleteIcon onClick={handleClickOpen} />
+          </IconButton>
+          </Box>
+        }
+      />
       <CardContent>
         <Box
           display="flex"
@@ -103,6 +136,7 @@ const ProductCard = ({ className, product, ...rest }) => {
           </Grid>
         </Grid>
       </Box>
+      <DeleteCompany open={open} name={product.name} onClose={handleClose} />
     </Card>
   );
 };

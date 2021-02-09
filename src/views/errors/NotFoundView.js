@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     display: 'inline-block',
     maxWidth: '100%',
-    width: 560
+    width: 320
   }
 }));
 
@@ -56,7 +56,7 @@ const NotFoundView = () => {
             <img
               alt="Under development"
               className={classes.image}
-              src="/static/images/undraw_page_not_found_su7k.svg"
+              src="/static/images/404_not_found.png"
             />
           </Box>
         </Container>

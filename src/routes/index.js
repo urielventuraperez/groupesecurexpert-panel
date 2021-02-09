@@ -11,6 +11,7 @@ import CompaniesListView from 'src/views/companies/CompaniesListView';
 import CompanyView from 'src/views/companies/company';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
+import FaqView from 'src/views/faq/FaqView';
 
 const RenderRoutes = (
   <Switch>
@@ -22,7 +23,8 @@ const RenderRoutes = (
     <Route exact path='/app/company/:slug' component={CompanyView}></Route>
     <Route exact path='/app/settings' component={SettingsView}></Route>
     <Route exact path='/login' component={LoginView}></Route>
-    <Route exact path='/register' component={RegisterView}></Route>
+    <Route exact path='/app/register' component={RegisterView}></Route>
+    <Route exact path='/app/faq' component={FaqView}></Route>
     {/* Rutas para los not found */}
     <Route exact path="/not-found" component={NotFoundView} />
     <Route exact path="*">
