@@ -64,8 +64,8 @@ const ProductCard = ({ className, product, ...rest }) => {
               isActive ? <VisibilityIcon /> : <VisibilityOffIcon />
             }
           </IconButton>
-          <IconButton color="secondary" aria-label="delete">
-            <DeleteIcon onClick={handleClickOpen} />
+          <IconButton onClick={handleClickOpen} color="secondary" aria-label="delete">
+            <DeleteIcon />
           </IconButton>
           </Box>
         }
