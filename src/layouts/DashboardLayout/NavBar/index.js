@@ -67,7 +67,7 @@ const items = [
     title: 'Login'
   },
   {
-    href: '/register',
+    href: '/app/register',
     icon: UserPlusIcon,
     title: 'Register'
   },
