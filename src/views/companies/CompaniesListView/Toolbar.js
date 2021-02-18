@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
   importButton: {
     marginRight: theme.spacing(1)
   },
-  exportButton: {
-    marginRight: theme.spacing(1)
-  }
 }));
 
 const Toolbar = ({ className, filterCompanies, ...rest }) => {

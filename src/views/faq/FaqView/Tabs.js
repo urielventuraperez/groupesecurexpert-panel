@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import FaqDialog from './Form';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -26,6 +27,16 @@ const useStyles = makeStyles(theme => ({
 
 const TabsFaq = () => {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Card>
@@ -67,10 +78,11 @@ const TabsFaq = () => {
             </Typography>
           </AccordionDetails>
         </Accordion>
-        <Fab className={classes.fab} color="primary" aria-label="add">
+        <Fab onClick={handleClickOpen} className={classes.fab} color="primary" aria-label="add">
           <AddIcon />
         </Fab>
       </CardContent>
+      <FaqDialog open={open} close={handleClose}/>
     </Card>
   );
 };
