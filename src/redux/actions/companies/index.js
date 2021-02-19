@@ -18,7 +18,6 @@ export function getCompanies() {
 }
 
 export function filterCompanies(input) {
-  console.log(input)
     return {
       type: FILTER_COMPANY,
       payload: input

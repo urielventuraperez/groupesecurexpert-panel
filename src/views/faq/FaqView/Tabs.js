@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TabsFaq = () => {
+const TabsFaq = props => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -40,49 +40,42 @@ const TabsFaq = () => {
 
   return (
     <Card>
-      <CardHeader subheader="Manage the frequent answer questions" title="FAQ" />
+      <CardHeader
+        subheader="Manage the frequent answer questions"
+        title="FAQ"
+      />
       <Divider />
       <CardContent>
         <Typography color="textPrimary" gutterBottom variant="h6">
           List
         </Typography>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography className={classes.heading}>Accordion 1</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
-            <Typography className={classes.heading}>Accordion 2</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Fab onClick={handleClickOpen} className={classes.fab} color="primary" aria-label="add">
+
+        {props.faqs.map(faq => (
+          <Accordion key={faq.id}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography className={classes.heading}>{faq.name}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                {faq.status}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+        <Fab
+          onClick={handleClickOpen}
+          className={classes.fab}
+          color="primary"
+          aria-label="add"
+        >
           <AddIcon />
         </Fab>
       </CardContent>
-      <FaqDialog open={open} close={handleClose}/>
+      <FaqDialog open={open} close={handleClose} />
     </Card>
   );
 };
