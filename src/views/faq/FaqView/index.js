@@ -1,10 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Page from 'src/components/Page';
 import TabsFaq from './Tabs';
-import { getFaqs } from 'src/redux/actions/faqs';
-import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,35 +22,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Faq = (props) => {
+const Faq = () => {
   const classes = useStyles();
-
-  const { getFaqs, faqs } = props;
-
-  useEffect(()=>{
-    getFaqs()
-  }, [getFaqs]);
 
   return (
     <Page className={classes.root} title={'Faq'}>
       <Container maxWidth="lg">
-          <TabsFaq faqs={faqs} />
+          <TabsFaq />
       </Container>
     </Page>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isLoadFaq: state.faqs.isLoadFaq,
-    faqs: state.faqs.faqs
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getFaqs: () => { dispatch(getFaqs()) }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Faq);
+export default Faq;

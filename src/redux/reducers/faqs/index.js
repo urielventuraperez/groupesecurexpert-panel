@@ -1,4 +1,4 @@
-import { IS_LOAD_FAQ, VIEW_FAQS } from '../../actionTypes/faqs';
+import { IS_LOAD_FAQ, VIEW_FAQS, DELETE_FAQ } from '../../actionTypes/faqs';
 
 const initialState = {
     faq: {},
@@ -12,6 +12,8 @@ function reducer(state=initialState, action){
             return {...state, isLoadFaq: !state.isLoadFaq}
         case VIEW_FAQS:
             return { ...state, isLoadFaq: false }, { faqs: action.payload.slice(0,10) }
+        case DELETE_FAQ:
+            return { ...state, faqs: state.faqs.filter( faq => faq.id !== action.payload ) }
         default: 
             return state;
     }

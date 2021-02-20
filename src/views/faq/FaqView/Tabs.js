@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -7,13 +7,14 @@ import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import FaqDialog from './Form';
+import { getFaqs, deleteFaq } from 'src/redux/actions/faqs';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -46,6 +47,13 @@ const TabsFaq = props => {
     setOpen(false);
   };
 
+  const { getFaqs, faqs } = props;
+
+  useEffect(()=>{
+    getFaqs()
+  }, [getFaqs]);
+
+
   return (
     <div>
       <Card>
@@ -54,13 +62,8 @@ const TabsFaq = props => {
           title="FAQ"
         />
         <Divider />
-        <CardContent>
-          <Typography color="textPrimary" gutterBottom variant="h6">
-            List
-          </Typography>
-        </CardContent>
       </Card>
-      {props.faqs.map(faq => (
+      {faqs.map(faq => (
         <Accordion key={faq.id} expanded={expanded === `panel${faq.id}`} onChange={handleChange(`panel${faq.id}`)}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -74,9 +77,9 @@ const TabsFaq = props => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
-            <Button size="small">Cancel</Button>
+            <Button onClick={() => props.deleteFaq(faq.id)} size="small">Delete</Button>
             <Button size="small" color="primary">
-              Save
+              Update
             </Button>
           </AccordionActions>
         </Accordion>
@@ -94,4 +97,18 @@ const TabsFaq = props => {
   );
 };
 
-export default TabsFaq;
+const mapStateToProps = (state) => {
+    return {
+      isLoadFaq: state.faqs.isLoadFaq,
+      faqs: state.faqs.faqs
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getFaqs: () => { dispatch(getFaqs()) },
+    deleteFaq: (faq) => { dispatch(deleteFaq(faq)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabsFaq);
