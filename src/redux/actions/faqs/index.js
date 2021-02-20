@@ -1,4 +1,4 @@
-import { VIEW_FAQS, IS_LOAD_FAQ, DELETE_FAQ } from '../../actionTypes/faqs';
+import { VIEW_FAQS, IS_LOAD_FAQ, DELETE_FAQ, UPDATE_FAQ, ADD_FAQ } from '../../actionTypes/faqs';
 import { ENV } from 'src/utils/environmets';
 
 export function getFaqs() {
@@ -16,6 +16,20 @@ export function getFaqs() {
         console.log(e);
       });
   };
+}
+
+export function addFaq(faq) {
+  return {
+    type: ADD_FAQ,
+    payload: faq
+  }
+}
+
+export function updateFaq( faq ) {
+  return {
+    type: UPDATE_FAQ,
+    payload: faq
+  }
 }
 
 export function deleteFaq( faq ) {
