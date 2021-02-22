@@ -8,6 +8,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import SaveIcon from '@material-ui/icons/Save';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { addFaq } from 'src/redux/actions/faqs';
+import { connect } from 'react-redux';
 
 const FaqSchema = Yup.object().shape({
   question: Yup.string()
@@ -31,7 +33,7 @@ const FaqDialog = props => {
         }}
         validationSchema={FaqSchema}
         onSubmit={values => {
-          console.log(values);
+          props.addFaq(values);
         }}
       >
         {({
@@ -99,4 +101,12 @@ const FaqDialog = props => {
   );
 };
 
-export default FaqDialog;
+const mapDispatchToProps = (dispatch) => {
+    return {
+      addFaq: (faq) => {
+        dispatch(addFaq(faq))
+      }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(FaqDialog);

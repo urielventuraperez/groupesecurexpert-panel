@@ -17,7 +17,7 @@ function reducer(state=initialState, action){
         case UPDATE_FAQ:
             return state;
         case ADD_FAQ:
-            return state;
+            return { ...state, faqs: [...state.faqs, action.payload] };
         default: 
             return state;
     }
