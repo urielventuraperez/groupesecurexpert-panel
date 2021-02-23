@@ -11,6 +11,16 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+  .email('Invalid email')
+  .required('Username is required'),
+  password: Yup.string()
+  .required('Password is required')
+});
 
 function Copyright() {
   return (
@@ -73,42 +83,79 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
+
+          <Formik
+            initialValues={{
+              email: '',
+              password: ''
+            }}
+            validationSchema={LoginSchema}
+            onSubmit={
+              values => {
+                console.log(values)
+              }
+            }
+          >
+                    {({
+              errors,
+              isValid,
+              dirty,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+              touched,
+              values
+            }) => (
+              <Form className={classes.form} onSubmit={handleSubmit} noValidate>
+              <TextField
+                variant="outlined"              
+                error={Boolean(touched.email && errors.email)}
+                helperText={touched.email && errors.email}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                margin="normal"
+                values={values.email}
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                error={Boolean(touched.password && errors.password)}
+                helperText={touched.password && errors.password}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                values={values.password}
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                disabled={!(isValid && dirty) || isSubmitting}
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </Form>
+            )}
+          </Formik>
         </div>
       </Grid>
     </Grid>
