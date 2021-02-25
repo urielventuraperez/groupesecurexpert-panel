@@ -13,6 +13,8 @@ import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { connect } from 'react-redux';
+import { logIn } from 'src/redux/actions/auth';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -67,8 +69,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
+const SignInSide = (props) => {
   const classes = useStyles();
+
+  const { logIn } = props;
 
   return (
     <Page title="Login Page">
@@ -91,8 +95,8 @@ export default function SignInSide() {
             }}
             validationSchema={LoginSchema}
             onSubmit={
-              values => {
-                console.log(values)
+              user => {
+                logIn(user);
               }
             }
           >
@@ -162,3 +166,11 @@ export default function SignInSide() {
     </Page>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+      logIn: (user) => { dispatch(logIn(user)) }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(SignInSide);
