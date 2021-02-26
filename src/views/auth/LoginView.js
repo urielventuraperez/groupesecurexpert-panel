@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
+import CustomSnackbar from 'src/components/Alert';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -71,8 +72,17 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInSide = (props) => {
   const classes = useStyles();
+  const [isLogged, setLogged] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { logIn, validate } = props;
 
-  const { logIn } = props;
+  
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   return (
     <Page title="Login Page">
@@ -97,6 +107,8 @@ const SignInSide = (props) => {
             onSubmit={
               user => {
                 logIn(user);
+                setOpen(true);
+                setLogged(props.isLogged);
               }
             }
           >
@@ -107,7 +119,6 @@ const SignInSide = (props) => {
               handleBlur,
               handleChange,
               handleSubmit,
-              isSubmitting,
               touched,
               values
             }) => (
@@ -147,7 +158,7 @@ const SignInSide = (props) => {
               <Button
                 type="submit"
                 fullWidth
-                disabled={!(isValid && dirty) || isSubmitting}
+                disabled={!(isValid && dirty) || validate}
                 variant="contained"
                 color="primary"
                 className={classes.submit}
@@ -161,10 +172,18 @@ const SignInSide = (props) => {
             )}
           </Formik>
         </div>
+        <CustomSnackbar open={open} status={isLogged} close={handleClose} />
       </Grid>
     </Grid>
     </Page>
   );
+}
+
+const mapStateToProps = (state) => {
+  return {
+    validate: state.auth.validate,
+    isLogged: state.auth.isLogged
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -173,4 +192,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(SignInSide);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInSide);
