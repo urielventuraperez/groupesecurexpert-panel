@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Container,
   Grid,
@@ -7,6 +7,8 @@ import {
 import Page from 'src/components/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
+import {connect} from 'react-redux';
+import { me } from 'src/redux/actions/users';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,8 +19,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Account = () => {
+const Account = (props) => {
   const classes = useStyles();
+
+  useEffect(()=>{
+    props.me();
+  },[props.me])
 
   return (
     <Page
@@ -36,7 +42,7 @@ const Account = () => {
             md={6}
             xs={12}
           >
-            <Profile />
+            <Profile userInfo={props.user} />
           </Grid>
           <Grid
             item
@@ -52,4 +58,17 @@ const Account = () => {
   );
 };
 
-export default Account;
+const mapStateToProps = (state) => {
+  return {
+    user: state.users.me,
+    isLoad: state.users.isLoad
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    me: () => dispatch(me()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

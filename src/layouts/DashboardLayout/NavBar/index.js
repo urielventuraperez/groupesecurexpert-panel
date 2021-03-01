@@ -13,9 +13,7 @@ import {
 } from '@material-ui/core';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import {
-  AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
-  Lock as LockIcon,
   Settings as SettingsIcon,
   ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
@@ -62,20 +60,10 @@ const items = [
     title: 'Faq'
   },
   {
-    href: '/login',
-    icon: LockIcon,
-    title: 'Login'
-  },
-  {
     href: '/app/register',
     icon: UserPlusIcon,
     title: 'Register'
   },
-  {
-    href: '/404',
-    icon: AlertCircleIcon,
-    title: 'Error'
-  }
 ];
 
 const useStyles = makeStyles(() => ({

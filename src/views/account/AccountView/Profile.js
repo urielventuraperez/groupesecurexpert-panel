@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
+import { deepPurple } from '@material-ui/core/colors';
 import {
   Avatar,
   Box,
@@ -11,25 +12,27 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GTM-7'
-};
-
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
-    height: 100,
-    width: 100
-  }
-}));
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: theme.palette.primary.main,
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+})
+);
 
-const Profile = ({ className, ...rest }) => {
+const Profile = (props, { className, ...rest }) => {
   const classes = useStyles();
+
+  const {userInfo} = props;
+
+  const lastConexion = (dateObj) => {
+    const momentObj = moment(dateObj);
+    const momentString = momentObj.format('LLL'); 
+    return momentString;
+  }
 
   return (
     <Card
@@ -44,27 +47,28 @@ const Profile = ({ className, ...rest }) => {
         >
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
-          />
+          >
+            {`${((userInfo.name || "").charAt(0) || "")}${((userInfo.lastname || "").charAt(0) || "")}`}
+          </Avatar>
           <Typography
             color="textPrimary"
             gutterBottom
             variant="h3"
           >
-            {user.name}
+            {`${userInfo.name} ${userInfo.lastname}`}
           </Typography>
           <Typography
             color="textSecondary"
             variant="body1"
           >
-            {`${user.city} ${user.country}`}
+            {`${userInfo.email}`}
           </Typography>
           <Typography
             className={classes.dateText}
             color="textSecondary"
             variant="body1"
           >
-            {`${moment().format('hh:mm A')} ${user.timezone}`}
+            {`Last session: ${lastConexion(userInfo.last_logged_in)}`}
           </Typography>
         </Box>
       </CardContent>
