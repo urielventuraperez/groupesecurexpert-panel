@@ -16,6 +16,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { logIn } from 'src/redux/actions/auth';
+import { withRouter } from "react-router-dom"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -72,11 +73,9 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInSide = (props) => {
   const classes = useStyles();
-  const [isLogged, setLogged] = useState(false);
   const [open, setOpen] = useState(false);
   const { logIn, validate } = props;
 
-  
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -86,10 +85,10 @@ const SignInSide = (props) => {
 
   const onLogin = (user) => {
     logIn(user);
-    setOpen(true);
-    setLogged(props.isLogged);
+    setTimeout(()=> { setOpen(true) }, 1000)
   }
 
+  
   return (
     <Page title="Login Page">
     <Grid container component="main" className={classes.root}>
@@ -176,7 +175,7 @@ const SignInSide = (props) => {
             )}
           </Formik>
         </div>
-        <CustomSnackbar open={open} status={isLogged} close={handleClose} />
+        <CustomSnackbar open={open} status={props.isLogged} close={handleClose} />
       </Grid>
     </Grid>
     </Page>
@@ -196,4 +195,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInSide);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignInSide));

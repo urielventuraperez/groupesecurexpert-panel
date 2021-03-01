@@ -18,11 +18,12 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomSnackbar = (props) => {
   const classes = useStyles();
+  console.log(props.status)
   return (
     <div className={classes.root}>
       <Snackbar open={props.open} autoHideDuration={6000} onClose={props.close}>
         <Alert onClose={props.close} severity={props.status ? 'success' : 'error'}>
-          {props.status ? 'This is a success message!' : 'This is a error message!' } 
+          {props.status ? '¡Welcome!' : 'Oops!, retry again. Wrong Credentials.' } 
         </Alert>
       </Snackbar>
     </div>

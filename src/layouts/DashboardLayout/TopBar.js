@@ -13,6 +13,8 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import InputIcon from '@material-ui/icons/Input';
 import Logo from 'src/components/Logo';
+import {connect} from 'react-redux';
+import {logOut} from 'src/redux/actions/auth';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -25,6 +27,7 @@ const useStyles = makeStyles(() => ({
 const TopBar = ({
   className,
   onMobileNavOpen,
+  logOut,
   ...rest
 }) => {
   const classes = useStyles();
@@ -41,7 +44,7 @@ const TopBar = ({
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          <IconButton color="inherit">
+          <IconButton onClick={() => logOut()} color="inherit">
             <InputIcon />
           </IconButton>
         </Hidden>
@@ -60,7 +63,14 @@ const TopBar = ({
 
 TopBar.propTypes = {
   className: PropTypes.string,
-  onMobileNavOpen: PropTypes.func
+  onMobileNavOpen: PropTypes.func,
+  logOut: PropTypes.func
 };
 
-export default TopBar;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: () => { dispatch(logOut()) }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TopBar);

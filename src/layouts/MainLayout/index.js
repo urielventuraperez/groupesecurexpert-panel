@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import DashboardLayout from '../DashboardLayout/';
 import Hidden from '@material-ui/core/Hidden';
-import { connect } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -44,23 +43,18 @@ const useStyles = makeStyles(theme => ({
 
 const MainLayout = props => {
   const classes = useStyles();
-  const [ isLogged, setIsLogged ] = useState(false);
-
-  useEffect(()=>{
-    setIsLogged(props.isLogged);
-  },[props.isLogged])
-
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
-        <DashboardLayout isLogged={isLogged} />
-        { isLogged && 
+        <DashboardLayout isLogged={props.isLogged} />
+        { props.isLogged && 
           <Hidden mdDown>
             <nav className={classes.drawer}></nav>
           </Hidden>
         }
-      <main className={ isLogged ? classes.content : classes.fullContent }>
-        { isLogged &&
+      <main className={ props.isLogged ? classes.content : classes.fullContent }>
+        { props.isLogged &&
           <div className={classes.toolbar} />
         }
         {props.content}
@@ -69,10 +63,4 @@ const MainLayout = props => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isLogged: state.auth.isLogged
-  }
-}
-
-export default connect(mapStateToProps, null)(MainLayout);
+export default MainLayout;

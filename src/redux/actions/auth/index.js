@@ -1,7 +1,9 @@
-import { SET_TOKEN, UNSET_TOKEN, VALIDATE_LOGIN } from 'src/redux/actionTypes/auth';
-import { API } from 'src/utils/environmets';
+import { SET_TOKEN, UNSET_TOKEN, VALIDATE_LOGIN, PERSIST_TOKEN } from 'src/redux/actionTypes/auth';
+import { API, LSTOKEN } from 'src/utils/environmets';
+// import { useHistory } from "react-router-dom";
 
 export function logIn (user) {
+    // const history = useHistory();
     let formData = new FormData();
     formData.append('email', user.email);
     formData.append('password', user.password);
@@ -11,17 +13,22 @@ export function logIn (user) {
             .then(response => response.json())
             .then( json => {
                 if (json.status){
-                    console.log(json.data.token);
-                    localStorage.setItem('user', json.data.token)
-                    return dispatch({ type: SET_TOKEN })
+                    localStorage.setItem(LSTOKEN, json.data.token)
                 }
-                return dispatch({type: VALIDATE_LOGIN})
-            }).catch(e => { console.log(e) })
+                return dispatch({ type: SET_TOKEN });
+            })
+            .catch(e => { console.log(e) })
     }
 }
 
+export function persistLogin () {
+  return (dispatch) => {
+    dispatch({type: PERSIST_TOKEN})
+  }
+}
+
 export function logOut () {
-    return function (dispatch) {
-        dispatch( UNSET_TOKEN);
+    return function(dispatch) {
+        dispatch({type: UNSET_TOKEN})
     }
 }
