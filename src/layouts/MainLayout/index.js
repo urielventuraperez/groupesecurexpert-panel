@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import DashboardLayout from '../DashboardLayout/';
 import Hidden from '@material-ui/core/Hidden';
+import { connect } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -43,12 +44,11 @@ const useStyles = makeStyles(theme => ({
 
 const MainLayout = props => {
   const classes = useStyles();
-
-  const [ isLogged, setIsLogged ] = useState(true);
+  const [ isLogged, setIsLogged ] = useState(false);
 
   useEffect(()=>{
-    setIsLogged(true);
-  },[isLogged])
+    setIsLogged(props.isLogged);
+  },[props.isLogged])
 
   return (
     <div className={classes.root}>
@@ -69,4 +69,10 @@ const MainLayout = props => {
   );
 };
 
-export default MainLayout;
+const mapStateToProps = (state) => {
+  return {
+    isLogged: state.auth.isLogged
+  }
+}
+
+export default connect(mapStateToProps, null)(MainLayout);

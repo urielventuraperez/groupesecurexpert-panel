@@ -12,20 +12,25 @@ import CompanyView from 'src/views/companies/company';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import FaqView from 'src/views/faq/FaqView';
+import ProtectedRoutes from './protected';
 
 const RenderRoutes = (
   <Switch>
-    <Route exact path='/' component={DashboardView} />
-    <Route exact path='/app/dashboard' component={DashboardView}></Route>
-    <Route exact path='/app/account' component={AccountView}></Route>
-    <Route exact path='/app/customers' component={CustomerListView}></Route>
-    <Route exact path='/app/companies' component={CompaniesListView}></Route>
-    <Route exact path='/app/company/:slug' component={CompanyView}></Route>
-    <Route exact path='/app/settings' component={SettingsView}></Route>
+    {/** Public routes **/}
     <Route exact path='/login' component={LoginView}></Route>
-    <Route exact path='/app/register' component={RegisterView}></Route>
-    <Route exact path='/app/faq' component={FaqView}></Route>
-    {/* Rutas para los not found */}
+
+    {/** Protected routes **/}
+    <ProtectedRoutes exact path='/' component={DashboardView} />
+    <ProtectedRoutes exact path='/app/dashboard' component={DashboardView} />
+    <ProtectedRoutes exact path='/app/account' component={AccountView} />
+    <ProtectedRoutes exact path='/app/customers' component={CustomerListView} />
+    <ProtectedRoutes exact path='/app/companies' component={CompaniesListView} />
+    <ProtectedRoutes exact path='/app/company/:slug' component={CompanyView} />
+    <ProtectedRoutes exact path='/app/settings' component={SettingsView} />
+    <ProtectedRoutes exact path='/app/register' component={RegisterView} />
+    <ProtectedRoutes exact path='/app/faq' component={FaqView} />
+
+    {/* Not found routes */}
     <Route exact path="/not-found" component={NotFoundView} />
     <Route exact path="*">
       <Redirect to="/not-found" />

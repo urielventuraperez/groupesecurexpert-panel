@@ -12,7 +12,7 @@ export function logIn (user) {
             .then( json => {
                 if (json.status){
                     console.log(json.data.token);
-                    // localStorage.setItem('token', json.data.token)
+                    localStorage.setItem('user', json.data.token)
                     return dispatch({ type: SET_TOKEN })
                 }
                 return dispatch({type: VALIDATE_LOGIN})

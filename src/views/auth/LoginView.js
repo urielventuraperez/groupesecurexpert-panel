@@ -84,6 +84,12 @@ const SignInSide = (props) => {
     setOpen(false);
   };
 
+  const onLogin = (user) => {
+    logIn(user);
+    setOpen(true);
+    setLogged(props.isLogged);
+  }
+
   return (
     <Page title="Login Page">
     <Grid container component="main" className={classes.root}>
@@ -106,9 +112,7 @@ const SignInSide = (props) => {
             validationSchema={LoginSchema}
             onSubmit={
               user => {
-                logIn(user);
-                setOpen(true);
-                setLogged(props.isLogged);
+                onLogin(user);
               }
             }
           >
