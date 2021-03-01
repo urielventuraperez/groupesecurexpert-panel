@@ -1,10 +1,12 @@
 import { VIEW_COMPANIES, VIEW_COMPANY, IS_LOAD_COMPANIES, FILTER_COMPANY } from '../../actionTypes/companies';
-import { ENV } from 'src/utils/environmets';
+import { ENV, API, LSTOKEN } from 'src/utils/environmets';
 
 export function getCompanies() {
   return function (dispatch) {
     dispatch({type: IS_LOAD_COMPANIES});
-    return fetch(`${ENV}/character`)
+    return fetch(`${API}/api/company`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}` }
+    })
       .then(response => response.json())
       .then( json => {
         return dispatch({
