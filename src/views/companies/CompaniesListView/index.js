@@ -5,6 +5,7 @@ import Toolbar from './Toolbar';
 import ProductCard from './ProductCard';
 import { getCompanies } from 'src/redux/actions/companies';
 import { connect } from 'react-redux';
+import Empty from 'src/components/Empty';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,27 +32,33 @@ const CompaniesListView = props => {
     <Page className={classes.root} title="Companies">
       <Container maxWidth={false}>
         <Toolbar />
-        <Box mt={3}>
-          <Grid container spacing={3}>
-              {filterCompanies.length === 0
-              ? companies.map(company => (
-                  <Grid item key={company.id} lg={4} md={6} xs={12}>
-                    <ProductCard
-                      className={classes.productCard}
-                      product={company}
-                    />
-                  </Grid>
-                ))
-              : filterCompanies.map(company => (
-                  <Grid item key={company.id} lg={4} md={6} xs={12}>
-                    <ProductCard
-                      className={classes.productCard}
-                      product={company}
-                    />
-                  </Grid>
-                ))}
-          </Grid>
-        </Box>
+        {companies.length !== 0 ? (
+          <div>
+            <Box mt={3}>
+              <Grid container spacing={3}>
+                {filterCompanies.length === 0
+                  ? companies.map(company => (
+                      <Grid item key={company.id} lg={4} md={6} xs={12}>
+                        <ProductCard
+                          className={classes.productCard}
+                          product={company}
+                        />
+                      </Grid>
+                    ))
+                  : filterCompanies.map(company => (
+                      <Grid item key={company.id} lg={4} md={6} xs={12}>
+                        <ProductCard
+                          className={classes.productCard}
+                          product={company}
+                        />
+                      </Grid>
+                    ))}
+              </Grid>
+            </Box>
+          </div>
+        ) : (
+          <Empty title="company" />
+        )}
       </Container>
     </Page>
   );
