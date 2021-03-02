@@ -1,6 +1,5 @@
 import { SET_TOKEN, UNSET_TOKEN, VALIDATE_LOGIN, PERSIST_TOKEN } from 'src/redux/actionTypes/auth';
-import { API, LSTOKEN } from 'src/utils/environmets';
-// import { useHistory } from "react-router-dom";
+import { API, LSTOKEN, LSUSER } from 'src/utils/environmets';
 
 export function logIn (user) {
     // const history = useHistory();
@@ -12,8 +11,9 @@ export function logIn (user) {
         return fetch(`${API}/login`, { method: 'POST' , body: formData })
             .then(response => response.json())
             .then( json => {
-                if (json.status){
+                if (json.status === true){
                     localStorage.setItem(LSTOKEN, json.data.token)
+                    localStorage.setItem(LSUSER, JSON.stringify(json.data.user))
                 }
                 return dispatch({ type: SET_TOKEN });
             })

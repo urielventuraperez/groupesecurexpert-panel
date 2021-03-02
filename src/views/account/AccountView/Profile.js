@@ -11,6 +11,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import { userInfoName, userInfoLastname, userInfoLastLoggedIn, userInfoEmail } from 'src/utils/user';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -23,10 +24,8 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-const Profile = (props, { className, ...rest }) => {
+const Profile = ({ className, ...rest }) => {
   const classes = useStyles();
-
-  const {userInfo} = props;
 
   const lastConexion = (dateObj) => {
     const momentObj = moment(dateObj);
@@ -48,27 +47,27 @@ const Profile = (props, { className, ...rest }) => {
           <Avatar
             className={classes.avatar}
           >
-            {`${((userInfo.name || "").charAt(0) || "")}${((userInfo.lastname || "").charAt(0) || "")}`}
+            {`${((userInfoName() || "").charAt(0) || "")}${((userInfoLastname() || "").charAt(0) || "")}`}
           </Avatar>
           <Typography
             color="textPrimary"
             gutterBottom
             variant="h3"
           >
-            {`${userInfo.name} ${userInfo.lastname}`}
+            {`${userInfoName()} ${userInfoLastname()}`}
           </Typography>
           <Typography
             color="textSecondary"
             variant="body1"
           >
-            {`${userInfo.email}`}
+            {`${userInfoEmail()}`}
           </Typography>
           <Typography
             className={classes.dateText}
             color="textSecondary"
             variant="body1"
           >
-            {`Last session: ${lastConexion(userInfo.last_logged_in)}`}
+            {`Last session: ${lastConexion(userInfoLastLoggedIn())}`}
           </Typography>
         </Box>
       </CardContent>

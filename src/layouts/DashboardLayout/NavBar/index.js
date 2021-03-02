@@ -11,60 +11,9 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
-import {
-  BarChart as BarChartIcon,
-  Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as UsersIcon
-} from 'react-feather';
 import NavItem from './NavItem';
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Gomez',
-  name: 'Paulo'
-};
-
-const items = [
-  {
-    href: '/app/dashboard',
-    icon: BarChartIcon,
-    title: 'Dashboard'
-  },
-  {
-    href: '/app/customers',
-    icon: UsersIcon,
-    title: 'Customers'
-  },
-  {
-    href: '/app/companies',
-    icon: ShoppingBagIcon,
-    title: 'Companies'
-  },
-  {
-    href: '/app/account',
-    icon: UserIcon,
-    title: 'Account'
-  },
-  {
-    href: '/app/settings',
-    icon: SettingsIcon,
-    title: 'Settings'
-  },
-  {
-    href: '/app/faq',
-    icon: HelpOutlineOutlinedIcon,
-    title: 'Faq'
-  },
-  {
-    href: '/app/register',
-    icon: UserPlusIcon,
-    title: 'Register'
-  },
-];
+import { userInfoName, userInfoLastname, userInfoRole } from 'src/utils/user';
+import { publicItems, protectedItems } from 'src/utils/menu';
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -93,49 +42,49 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   }, [location.pathname]);
 
   const content = (
-    <Box
-      height="100%"
-      display="flex"
-      flexDirection="column"
-    >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      >
+    <Box height="100%" display="flex" flexDirection="column">
+      <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar
           className={classes.avatar}
           component={RouterLink}
           to="/app/account"
         >
-          PG
+          {`${(userInfoName() || '').charAt(0) || ''}${(
+            userInfoLastname() || ''
+          ).charAt(0) || ''}`}
         </Avatar>
-        <Typography
-          className={classes.name}
-          color="textPrimary"
-          variant="h5"
-        >
-          {user.name}
+        <Typography className={classes.name} color="textPrimary" variant="h5">
+          {userInfoName()}
         </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {user.jobTitle}
+        <Typography color="textSecondary" variant="body2">
+          {userInfoLastname()}
         </Typography>
       </Box>
       <Divider />
       <Box p={2}>
         <List>
-          {items.map((item) => (
-            <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
-            />
-          ))}
+          {publicItems.map(item =>
+            (
+                <NavItem
+                  href={item.href}
+                  key={item.title}
+                  title={item.title}
+                  icon={item.icon}
+                />
+            )
+          )}
+          {
+          userInfoRole() === 'Admin' &&
+          protectedItems.map(item =>
+            (
+                <NavItem
+                  href={item.href}
+                  key={item.title}
+                  title={item.title}
+                  icon={item.icon}
+                />
+            )
+          )}
         </List>
       </Box>
       <Box flexGrow={1} />
