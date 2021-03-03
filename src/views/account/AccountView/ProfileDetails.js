@@ -174,7 +174,7 @@ const ProfileDetails = ({
                     variant="contained"
                     disabled={isLoad}
                   >
-                    Save details
+                    Save Profile
                   </Button>
                 </Box>
               </Grid>

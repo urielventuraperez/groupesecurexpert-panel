@@ -13,9 +13,16 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import IconButton from '@material-ui/core/IconButton';
 import Page from 'src/components/Page';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
+import generatePassword from 'src/utils/passwordGenerator';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -27,11 +34,18 @@ const useStyles = makeStyles((theme) => ({
 const RegisterView = () => {
   const classes = useStyles();
 
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
+
   return (
-    <Page
-      className={classes.root}
-      title="Register"
-    >
+    <Page className={classes.root} title="Register">
       <Box
         display="flex"
         flexDirection="column"
@@ -47,17 +61,23 @@ const RegisterView = () => {
               password: '',
               policy: false
             }}
-            validationSchema={
-              Yup.object().shape({
-                email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                firstName: Yup.string().max(255).required('First name is required'),
-                lastName: Yup.string().max(255).required('Last name is required'),
-                password: Yup.string().max(255).required('password is required'),
-                policy: Yup.boolean().oneOf([true], 'This field must be checked')
-              })
-            }
-            onSubmit={() => {
-              console.log('hola');
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
+              firstName: Yup.string()
+                .max(255)
+                .required('First name is required'),
+              lastName: Yup.string()
+                .max(255)
+                .required('Last name is required'),
+              password: Yup.string()
+                .max(255),
+              policy: Yup.boolean().oneOf([true], 'This field must be checked')
+            })}
+            onSubmit={values => {
+              console.log(values);
             }}
           >
             {({
@@ -65,16 +85,13 @@ const RegisterView = () => {
               handleBlur,
               handleChange,
               handleSubmit,
-              isSubmitting,
               touched,
-              values
+              values,
+              setFieldValue
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
+                  <Typography color="textPrimary" variant="h2">
                     Create new account
                   </Typography>
                   <Typography
@@ -122,35 +139,39 @@ const RegisterView = () => {
                   value={values.email}
                   variant="outlined"
                 />
-                <TextField
+                <OutlinedInput
                   error={Boolean(touched.password && errors.password)}
                   fullWidth
-                  helperText={touched.password && errors.password}
-                  label="Password"
-                  margin="normal"
                   name="password"
+                  placeholder="Password"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={values.password}
-                  variant="outlined"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                      <IconButton onClick={ () => { setFieldValue('password', generatePassword(12)) } }>
+                        <LockTwoToneIcon color={'secondary'} />
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
-                <Box
-                  alignItems="center"
-                  display="flex"
-                  ml={-1}
-                >
+                <Box alignItems="center" display="flex" ml={-1}>
                   <Checkbox
                     checked={values.policy}
                     name="policy"
                     onChange={handleChange}
                   />
-                  <Typography
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    I have read the
-                    {' '}
+                  <Typography color="textSecondary" variant="body1">
+                    I have read the{' '}
                     <Link
                       color="primary"
                       component={RouterLink}
@@ -163,14 +184,11 @@ const RegisterView = () => {
                   </Typography>
                 </Box>
                 {Boolean(touched.policy && errors.policy) && (
-                  <FormHelperText error>
-                    {errors.policy}
-                  </FormHelperText>
+                  <FormHelperText error>{errors.policy}</FormHelperText>
                 )}
                 <Box my={2}>
                   <Button
                     color="primary"
-                    disabled={isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"
@@ -179,20 +197,6 @@ const RegisterView = () => {
                     Sign up now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/login"
-                    variant="h6"
-                  >
-                    Sign in
-                  </Link>
-                </Typography>
               </form>
             )}
           </Formik>
