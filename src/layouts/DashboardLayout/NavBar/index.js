@@ -12,8 +12,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavItem from './NavItem';
-import { userInfoName, userInfoLastname, userInfoRole } from 'src/utils/user';
 import { publicItems, protectedItems } from 'src/utils/menu';
+import {connect} from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const NavBar = ({ onMobileClose, openMobile }) => {
+const NavBar = ( { me, onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
 
@@ -49,15 +49,15 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           component={RouterLink}
           to="/app/account"
         >
-          {`${(userInfoName() || '').charAt(0) || ''}${(
-            userInfoLastname() || ''
+          {`${(me.name || '').charAt(0) || ''}${(
+            me.lastname || ''
           ).charAt(0) || ''}`}
         </Avatar>
         <Typography className={classes.name} color="textPrimary" variant="h5">
-          {userInfoName()}
+          {me.name}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {userInfoLastname()}
+          {me.lastname}
         </Typography>
       </Box>
       <Divider />
@@ -74,7 +74,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
             )
           )}
           {
-          userInfoRole() === 'Admin' &&
+          me.role === 'Admin' &&
           protectedItems.map(item =>
             (
                 <NavItem
@@ -128,4 +128,10 @@ NavBar.defaultProps = {
   openMobile: false
 };
 
-export default NavBar;
+const mapStateToProps = (state) => {
+  return {
+    me: state.users.me
+  }
+}
+
+export default connect(mapStateToProps, null)(NavBar);

@@ -11,7 +11,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { userInfoName, userInfoLastname, userInfoLastLoggedIn, userInfoEmail } from 'src/utils/user';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-const Profile = ({ className, ...rest }) => {
+const Profile = ({ name, lastname, email, lastLogged, className, ...rest }) => {
   const classes = useStyles();
 
   const lastConexion = (dateObj) => {
@@ -47,27 +46,27 @@ const Profile = ({ className, ...rest }) => {
           <Avatar
             className={classes.avatar}
           >
-            {`${((userInfoName() || "").charAt(0) || "")}${((userInfoLastname() || "").charAt(0) || "")}`}
+            {`${((name || "").charAt(0) || "")}${((lastname || "").charAt(0) || "")}`}
           </Avatar>
           <Typography
             color="textPrimary"
             gutterBottom
             variant="h3"
           >
-            {`${userInfoName()} ${userInfoLastname()}`}
+            {`${name} ${lastname}`}
           </Typography>
           <Typography
             color="textSecondary"
             variant="body1"
           >
-            {`${userInfoEmail()}`}
+            {`${email}`}
           </Typography>
           <Typography
             className={classes.dateText}
             color="textSecondary"
             variant="body1"
           >
-            {`Last session: ${lastConexion(userInfoLastLoggedIn())}`}
+            {`Last session: ${lastConexion(lastLogged)}`}
           </Typography>
         </Box>
       </CardContent>

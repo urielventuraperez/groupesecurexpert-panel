@@ -7,6 +7,7 @@ import {
 import Page from 'src/components/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Account = () => {
+const Account = ({me}) => {
   const classes = useStyles();
 
   return (
@@ -36,7 +37,7 @@ const Account = () => {
             md={6}
             xs={12}
           >
-            <Profile />
+            <Profile name={me.name} lastname={me.lastname} email={me.email} lastLogged = {me.last_logged_in} />
           </Grid>
           <Grid
             item
@@ -44,7 +45,7 @@ const Account = () => {
             md={6}
             xs={12}
           >
-            <ProfileDetails />
+            <ProfileDetails name={me.name} lastname={me.lastname} email={me.email} userRole={me.role} />
           </Grid>
         </Grid>
       </Container>
@@ -52,4 +53,10 @@ const Account = () => {
   );
 };
 
-export default Account;
+const mapStateToProps = (state) => {
+  return {
+    me: state.users.me
+  }
+}
+
+export default connect(mapStateToProps, null)(Account);

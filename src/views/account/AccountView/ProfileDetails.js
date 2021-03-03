@@ -13,23 +13,17 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { API, LSTOKEN } from 'src/utils/environmets';
-import {
-  userInfoName,
-  userInfoLastname,
-  userInfoEmail,
-  userInfoRole
-} from 'src/utils/user';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const ProfileDetails = ({ className, ...rest }) => {
+const ProfileDetails = ({ name, lastname, userRole, email, className, ...rest }) => {
   const classes = useStyles();
 
   const [roles, setRoles] = useState([]);
   const [loadRoles, setLoadRoles] = useState(false);
-  const [role, setRole] = useState(userInfoRole());
+  const [role, setRole] = useState(userRole);
 
   useEffect(() => {
     getRoles();
@@ -72,7 +66,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={userInfoName()}
+                value={name}
                 variant="outlined"
               />
             </Grid>
@@ -83,7 +77,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={userInfoLastname()}
+                value={lastname}
                 variant="outlined"
               />
             </Grid>
@@ -94,7 +88,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="email"
                 onChange={handleChange}
                 required
-                value={userInfoEmail()}
+                value={email}
                 variant="outlined"
               />
             </Grid>

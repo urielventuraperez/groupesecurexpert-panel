@@ -8,15 +8,17 @@ import { ConnectedRouter } from 'connected-react-router';
 import RenderRoutes from 'src/routes';
 import MainLayout from 'src/layouts/MainLayout';
 import { persistLogin } from 'src/redux/actions/auth';
+import { me } from 'src/redux/actions/users';
 import { connect } from 'react-redux';
 
-const App = ({history, isLogged, persistLogin}) => {
+const App = ({history, isLogged, persistLogin, me}) => {
 
   const isLoggedIn = isLogged ? true : false;
 
   useEffect(()=>{
-    persistLogin()
-  },[persistLogin])
+    persistLogin();
+    me()
+  },[persistLogin, me])
 
   return (
     <ConnectedRouter history={history}>
@@ -31,18 +33,21 @@ const App = ({history, isLogged, persistLogin}) => {
 App.propTypes = {
   history: PropTypes.object,
   isLogged: PropTypes.bool,
-  persistLogin: PropTypes.func
+  persistLogin: PropTypes.func,
+  me: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
   return {
-    isLogged: state.auth.isLogged
+    isLogged: state.auth.isLogged,
+    me: state.users.me
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    persistLogin: () => { dispatch(persistLogin()) }
+    persistLogin: () => { dispatch(persistLogin()) },
+    me: () => { dispatch(me()) }
   }
 }
 

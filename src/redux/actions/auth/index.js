@@ -1,4 +1,5 @@
 import { SET_TOKEN, UNSET_TOKEN, VALIDATE_LOGIN, PERSIST_TOKEN } from 'src/redux/actionTypes/auth';
+import { ME } from 'src/redux/actionTypes/users';
 import { API, LSTOKEN, LSUSER } from 'src/utils/environmets';
 
 export function logIn (user) {
@@ -13,6 +14,7 @@ export function logIn (user) {
             .then( json => {
                 if (json.status === true){
                     localStorage.setItem(LSTOKEN, json.data.token)
+                    dispatch({ type: ME, payload: json.data.user })
                     localStorage.setItem(LSUSER, JSON.stringify(json.data.user))
                 }
                 return dispatch({ type: SET_TOKEN });
