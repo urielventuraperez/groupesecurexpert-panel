@@ -5,6 +5,7 @@ import companies from './companies';
 import visitors from './visitors';
 import faqs from './faqs';
 import users from './users';
+import alert from './alert';
 
 const rootReducer = (history) => combineReducers({
   auth,
@@ -12,6 +13,7 @@ const rootReducer = (history) => combineReducers({
   companies,
   visitors,
   faqs,
+  alert,
   router: connectRouter(history),
 });
 

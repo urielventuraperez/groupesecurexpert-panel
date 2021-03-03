@@ -18,7 +18,7 @@ const App = ({history, isLogged, persistLogin, me}) => {
   useEffect(()=>{
     persistLogin();
     me()
-  },[persistLogin, me])
+  },[persistLogin])
 
   return (
     <ConnectedRouter history={history}>
@@ -34,7 +34,7 @@ App.propTypes = {
   history: PropTypes.object,
   isLogged: PropTypes.bool,
   persistLogin: PropTypes.func,
-  me: PropTypes.object
+  me: PropTypes.func
 };
 
 const mapStateToProps = (state) => {

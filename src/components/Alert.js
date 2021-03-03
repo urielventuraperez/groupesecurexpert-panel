@@ -22,7 +22,7 @@ const CustomSnackbar = (props) => {
     <div className={classes.root}>
       <Snackbar open={props.open} autoHideDuration={6000} onClose={props.close}>
         <Alert onClose={props.close} severity={props.status ? 'success' : 'error'}>
-          {props.status ? '¡Welcome!' : 'Oops!, retry again. Wrong Credentials.' } 
+          {props.text } 
         </Alert>
       </Snackbar>
     </div>

@@ -175,7 +175,7 @@ const SignInSide = (props) => {
             )}
           </Formik>
         </div>
-        <CustomSnackbar open={open} status={props.isLogged} close={handleClose} />
+        <CustomSnackbar open={open} status={props.isLogged} text={props.isLogged ? '¡Welcome!' : 'Oops! Retry, please...'} close={handleClose} />
       </Grid>
     </Grid>
     </Page>
