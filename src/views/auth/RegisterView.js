@@ -1,14 +1,10 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
   Box,
   Button,
-  Checkbox,
   Container,
-  FormHelperText,
-  Link,
   TextField,
   Typography,
   makeStyles
@@ -21,6 +17,8 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import generatePassword from 'src/utils/passwordGenerator';
+import { API, LSTOKEN } from 'src/utils/environmets';
+import CustomSnackbar from 'src/components/Alert';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,6 +34,15 @@ const RegisterView = () => {
 
   const [showPassword, setShowPassword] = React.useState(false);
 
+  const [roles, setRoles] = React.useState([]);
+  const [loadRoles, setLoadRoles] = React.useState(false);
+  const [newUserResponse, setNewUserResponse] = React.useState({
+    status: '',
+    message: '',
+  });
+
+  const [showAlert, setShowAlert] = React.useState(false);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -43,6 +50,43 @@ const RegisterView = () => {
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
+
+  async function getRoles() {
+    let response = await fetch(`${API}/api/roles`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    });
+    if (response.status) {
+      let getRoles = await response.json();
+      setLoadRoles(true);
+      setRoles(getRoles.data);
+    }
+  }
+
+  async function saveUser(data) {
+    let formData = new FormData();
+    Object.keys(data).forEach(key => formData.append(key, data[key]));
+    let response = await fetch(`${API}/api/register`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      },
+      body: formData
+    })
+
+    let status = await response.json();
+    setShowAlert(true);
+    setNewUserResponse({
+      message: status.message,
+      status: status.status
+    });
+    setTimeout(()=>{setShowAlert(false)}, 5000)
+  }
+
+  React.useEffect(() => {
+    getRoles();
+  }, []);
 
   return (
     <Page className={classes.root} title="Register">
@@ -56,28 +100,27 @@ const RegisterView = () => {
           <Formik
             initialValues={{
               email: '',
-              firstName: '',
-              lastName: '',
+              name: '',
+              last_name: '',
               password: '',
-              policy: false
+              role_id: '1'
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
                 .email('Must be a valid email')
                 .max(255)
                 .required('Email is required'),
-              firstName: Yup.string()
+              name: Yup.string()
                 .max(255)
                 .required('First name is required'),
-              lastName: Yup.string()
+              last_name: Yup.string()
                 .max(255)
                 .required('Last name is required'),
               password: Yup.string()
-                .max(255),
-              policy: Yup.boolean().oneOf([true], 'This field must be checked')
+                .max(255)
             })}
             onSubmit={values => {
-              console.log(values);
+              saveUser(values);
             }}
           >
             {({
@@ -99,7 +142,7 @@ const RegisterView = () => {
                     gutterBottom
                     variant="body2"
                   >
-                    Use your email to create new account
+                    Use your ADMIN account to create a system user.
                   </Typography>
                 </Box>
                 <TextField
@@ -108,7 +151,7 @@ const RegisterView = () => {
                   helperText={touched.firstName && errors.firstName}
                   label="First name"
                   margin="normal"
-                  name="firstName"
+                  name="name"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.firstName}
@@ -120,12 +163,32 @@ const RegisterView = () => {
                   helperText={touched.lastName && errors.lastName}
                   label="Last name"
                   margin="normal"
-                  name="lastName"
+                  name="last_name"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.lastName}
                   variant="outlined"
                 />
+                {loadRoles && (
+                    <TextField
+                      fullWidth
+                      label="Select Role"
+                      name="role_id"
+                      margin="normal"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      select
+                      value={values.role}
+                      SelectProps={{ native: true }}
+                      variant="outlined"
+                    >
+                      {roles.map(option => (
+                        <option key={option.id} value={option.id}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </TextField>
+                  )}
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
@@ -164,28 +227,6 @@ const RegisterView = () => {
                     </InputAdornment>
                   }
                 />
-                <Box alignItems="center" display="flex" ml={-1}>
-                  <Checkbox
-                    checked={values.policy}
-                    name="policy"
-                    onChange={handleChange}
-                  />
-                  <Typography color="textSecondary" variant="body1">
-                    I have read the{' '}
-                    <Link
-                      color="primary"
-                      component={RouterLink}
-                      to="#"
-                      underline="always"
-                      variant="h6"
-                    >
-                      Terms and Conditions
-                    </Link>
-                  </Typography>
-                </Box>
-                {Boolean(touched.policy && errors.policy) && (
-                  <FormHelperText error>{errors.policy}</FormHelperText>
-                )}
                 <Box my={2}>
                   <Button
                     color="primary"
@@ -194,7 +235,7 @@ const RegisterView = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign up now
+                    Register
                   </Button>
                 </Box>
               </form>
@@ -202,6 +243,7 @@ const RegisterView = () => {
           </Formik>
         </Container>
       </Box>
+      <CustomSnackbar open={ showAlert } status={ newUserResponse.status } text={ newUserResponse.message } close={()=>{ showAlert && setTimeout(()=>{(setShowAlert(false))},6000)}} />
     </Page>
   );
 };

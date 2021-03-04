@@ -48,8 +48,7 @@ const ProfileDetails = ({
 
   const [roles, setRoles] = useState([]);
   const [loadRoles, setLoadRoles] = useState(false);
-  // const [isSubmitting, setIsSubmitting] = useState(false);
-
+  
   useEffect(() => {
     getRoles();
   }, []);
@@ -79,9 +78,7 @@ const ProfileDetails = ({
       }}
       validationSchema={ProfileSchema}
       onSubmit={values => {
-        // setIsSubmitting(true);
         updateMe(values);
-        // setTimeout(()=>{ setIsSubmitting(false) }, 1000)
       }}
     >
       {({
