@@ -108,16 +108,17 @@ const RegisterView = () => {
             validationSchema={Yup.object().shape({
               email: Yup.string()
                 .email('Must be a valid email')
-                .max(255)
+                .max(55)
                 .required('Email is required'),
               name: Yup.string()
-                .max(255)
+                .max(55)
                 .required('First name is required'),
               last_name: Yup.string()
-                .max(255)
+                .max(55)
                 .required('Last name is required'),
               password: Yup.string()
-                .max(255)
+                .min(8)
+                .max(50)
             })}
             onSubmit={values => {
               saveUser(values);
