@@ -1,18 +1,13 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import Typography from '@material-ui/core/Typography';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
 import SaveIcon from '@material-ui/icons/Save';
 // import { TextEditor } from 'src/components/TextEditor';
-import CloseIcon from '@material-ui/icons/Close';
+import ModalToolbar from 'src/components/ModalToolbar';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { addFaq, updateFaq } from 'src/redux/actions/faqs';
@@ -29,23 +24,11 @@ const FaqSchema = Yup.object().shape({
     .required('Required')
 });
 
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    position: 'relative'
-  },
-  title: {
-    marginLeft: theme.spacing(2),
-    flex: 1
-  }
-}));
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const FaqDialog = props => {
-  const classes = useStyles();
-
   return (
     <Dialog
       TransitionComponent={Transition}
@@ -53,21 +36,7 @@ const FaqDialog = props => {
       open={props.open}
       onClose={props.close || props.closeModal}
     >
-      <AppBar className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={props.close}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-          { !props.faq ? 'Add new FAQ' : `Update ${props.faq.ask}` }
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <ModalToolbar title={ !props.faq ? 'Add new FAQ' : `Update ${props.faq.ask}` } action={'Close'} close={props.close} />
       <Formik
         initialValues={{
           ask: props.faq ? props.faq.ask : '',
