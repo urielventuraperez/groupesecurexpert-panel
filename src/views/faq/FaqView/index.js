@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import TabsFaq from './Tabs';
 import FaqDialog from './Form';
 import CustomSnackbar from 'src/components/Alert';
+import Empty from 'src/components/Empty';
 import { getFaqs, deleteFaq } from 'src/redux/actions/faqs';
 import { connect } from 'react-redux';
 
@@ -60,9 +61,13 @@ const Faq = (props) => {
         />
         <Divider />
       </Card>
-      {faqs.map(faq => (
+      { faqs.length !== 0 ? 
+          faqs.map(faq => (
           <TabsFaq key={faq.id} faq={faq} deleteFaq={()=>deleteFaq(faq.id)} />
-      ))}
+      )) :
+          <Empty title="FAQ" />
+    }
+      {}
       </Container>
       <Fab
         onClick={handleClickOpen}
