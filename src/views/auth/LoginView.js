@@ -99,10 +99,6 @@ const SignInSide = (props) => {
           <Avatar className={classes.avatar}>
             <Logo width={60} />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-
           <Formik
             initialValues={{
               email: '',

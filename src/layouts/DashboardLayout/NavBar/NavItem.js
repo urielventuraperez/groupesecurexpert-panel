@@ -27,12 +27,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1)
   },
   title: {
-    marginRight: 'auto'
+    marginRight: 'auto',
+    fontWeight: '600'
   },
   active: {
     color: theme.palette.primary.main,
     '& $title': {
-      fontWeight: theme.typography.fontWeightMedium
+      fontWeight: theme.typography.fontWeightBold
     },
     '& $icon': {
       color: theme.palette.primary.main

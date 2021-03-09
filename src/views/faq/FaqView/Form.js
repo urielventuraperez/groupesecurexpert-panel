@@ -45,12 +45,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const FaqDialog = props => {
   const classes = useStyles();
+
   return (
     <Dialog
       TransitionComponent={Transition}
       fullScreen
       open={props.open}
-      onClose={props.close}
+      onClose={props.close || props.closeModal}
     >
       <AppBar className={classes.appBar}>
         <Toolbar>
@@ -63,7 +64,7 @@ const FaqDialog = props => {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Add new FAQ
+          { !props.faq ? 'Add new FAQ' : `Update ${props.faq.ask}` }
           </Typography>
         </Toolbar>
       </AppBar>
@@ -75,8 +76,9 @@ const FaqDialog = props => {
         validationSchema={FaqSchema}
         onSubmit={values => {
           !props.faq ?
-          props.addFaq(values) :
-          props.updateFaq(values)
+          props.addFaq(values) && props.close
+          :
+          props.updateFaq(values, props.faq.id) && props.close
         }}
       >
         {({
@@ -125,13 +127,14 @@ const FaqDialog = props => {
             <DialogActions>
               <Button onClick={props.close}>Cancel</Button>
               <Button
+                onClick={props.close}
                 disabled={ !props.faq && !(isValid && dirty)}
                 type="submit"
                 variant="contained"
                 color="primary"
                 startIcon={<SaveIcon />}
               >
-                Save
+                { !props.faq ? 'Save' : 'Update' }
               </Button>
             </DialogActions>
           </Form>
@@ -141,15 +144,22 @@ const FaqDialog = props => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    faqs: state.faqs.faqs,
+    closeModal: state.faqs.closeModal
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
-    addFaq: faq => {
+    addFaq: (faq) => {
       dispatch(addFaq(faq));
     },
-    updateFaq: faq => {
-      dispatch(updateFaq(faq));
+    updateFaq: (faq, id) => {
+      dispatch(updateFaq(faq, id));
     }
   };
 };
 
-export default connect(null, mapDispatchToProps)(FaqDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(FaqDialog);

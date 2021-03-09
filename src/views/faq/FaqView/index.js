@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Divider from '@material-ui/core/Divider';
 import TabsFaq from './Tabs';
 import FaqDialog from './Form';
+import CustomSnackbar from 'src/components/Alert';
 import { getFaqs, deleteFaq } from 'src/redux/actions/faqs';
 import { connect } from 'react-redux';
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightRegular
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2)
   }
@@ -72,6 +73,7 @@ const Faq = (props) => {
         <AddIcon />
       </Fab>
       <FaqDialog open={open} close={handleClose} />
+      <CustomSnackbar open={props.isShow} status={props.alertStatus} text={ props.alertStatus ? 'Successfully updated!' : 'Oops, retry again...'} />
     </Page>
   );
 };
@@ -79,7 +81,9 @@ const Faq = (props) => {
 const mapStateToProps = (state) => {
   return {
     isLoadFaq: state.faqs.isLoadFaq,
-    faqs: state.faqs.faqs
+    faqs: state.faqs.faqs,
+    isShow: state.alert.isShow,
+    alertStatus: state.alert.status
   }
 }
 

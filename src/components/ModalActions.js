@@ -13,19 +13,20 @@ const ModalAction = (props) => {
         onClose={props.onCloseModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth="md"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Action"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Confirm Action"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
               { `¿Are you sure?` }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Button color="primary" onClick={props.onCloseModal}>
+            No
+          </Button>
           <Button onClick={props.mainAction} autoFocus>
             Delete
-          </Button>
-          <Button color="primary" onClick={props.onCloseModal}>
-            Cancel
           </Button>
         </DialogActions>
       </Dialog>

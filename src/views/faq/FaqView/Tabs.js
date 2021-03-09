@@ -10,11 +10,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import ModalAction from 'src/components/ModalActions';
 import FaqDialog from './Form';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles(theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
+    fontWeight: theme.typography.fontWeightBold
   },
   fab: {
     position: 'absolute',
@@ -77,10 +79,10 @@ const TabsFaq = props => {
         </AccordionDetails>
         <Divider />
         <AccordionActions>
-          <Button onClick={handleClickOpenModal} size="small">
+          <Button color="secondary" variant="contained" onClick={handleClickOpenModal} size="small" startIcon={<DeleteIcon />}>
             Delete
           </Button>
-          <Button onClick={() => { handleClickOpenModalUpdate(faq.id, faq.ask, faq.answer) }} size="small" color="primary">
+          <Button onClick={() => { handleClickOpenModalUpdate(faq.id, faq.ask, faq.answer) }} size="small" variant="contained" color="primary"  startIcon={<EditIcon />}>
             Update
           </Button>
         </AccordionActions>
