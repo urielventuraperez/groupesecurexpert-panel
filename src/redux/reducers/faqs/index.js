@@ -11,7 +11,7 @@ function reducer(state=initialState, action){
         case IS_LOAD_FAQ:
             return {...state, isLoadFaq: !state.isLoadFaq}
         case VIEW_FAQS:
-            return { ...state, isLoadFaq: false }, { faqs: action.payload.slice(0,10) }
+            return { ...state, isLoadFaq: false }, { faqs: action.payload }
         case DELETE_FAQ:
             return { ...state, faqs: state.faqs.filter( faq => faq.id !== action.payload ) }
         case UPDATE_FAQ:

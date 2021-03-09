@@ -11,21 +11,21 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
 import SaveIcon from '@material-ui/icons/Save';
-import { TextEditor } from 'src/components/TextEditor';
+// import { TextEditor } from 'src/components/TextEditor';
 import CloseIcon from '@material-ui/icons/Close';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { addFaq } from 'src/redux/actions/faqs';
+import { addFaq, updateFaq } from 'src/redux/actions/faqs';
 import { connect } from 'react-redux';
 
 const FaqSchema = Yup.object().shape({
-  question: Yup.string()
+  ask: Yup.string()
     .min(2, 'Too Short!')
     .max(150, 'Too Long!')
     .required('Required'),
   answer: Yup.string()
     .min(2, 'Too Short!')
-    .max(550, 'Too Long!')
+    .max(5550, 'Too Long!')
     .required('Required')
 });
 
@@ -69,12 +69,14 @@ const FaqDialog = props => {
       </AppBar>
       <Formik
         initialValues={{
-          question: '',
-          answer: ''
+          ask: props.faq ? props.faq.ask : '',
+          answer: props.faq ? props.faq.answer : ''
         }}
         validationSchema={FaqSchema}
         onSubmit={values => {
-          props.addFaq(values);
+          !props.faq ?
+          props.addFaq(values) :
+          props.updateFaq(values)
         }}
       >
         {({
@@ -84,7 +86,6 @@ const FaqDialog = props => {
           handleBlur,
           handleChange,
           handleSubmit,
-          isSubmitting,
           touched,
           values
         }) => (
@@ -92,20 +93,22 @@ const FaqDialog = props => {
             <DialogContent>
               <TextField
                 autoFocus
-                error={Boolean(touched.question && errors.question)}
-                helperText={touched.question && errors.question}
+                error={Boolean(touched.ask && errors.ask)}
+                helperText={touched.ask && errors.ask}
                 margin="dense"
-                id="question"
-                name="question"
+                id="ask"
+                name="ask"
                 label="Add the Question"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.question}
+                value={values.ask}
                 type="text"
                 fullWidth
               />
               <TextField
                 fullWidth
+                multiline
+                rowsMax={10}
                 error={Boolean(touched.answer && errors.answer)}
                 helperText={touched.answer && errors.answer}
                 margin="dense"
@@ -116,18 +119,15 @@ const FaqDialog = props => {
                 onChange={handleChange}
                 value={values.answer}
                 type="text"
-                InputProps={{
-                  inputComponent: TextEditor
-                }}
+
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={props.close}>Cancel</Button>
               <Button
-                disabled={!(isValid && dirty) || isSubmitting}
+                disabled={ !props.faq && !(isValid && dirty)}
                 type="submit"
                 variant="contained"
-                onClick={props.close}
                 color="primary"
                 startIcon={<SaveIcon />}
               >
@@ -145,6 +145,9 @@ const mapDispatchToProps = dispatch => {
   return {
     addFaq: faq => {
       dispatch(addFaq(faq));
+    },
+    updateFaq: faq => {
+      dispatch(updateFaq(faq));
     }
   };
 };

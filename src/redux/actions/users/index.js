@@ -63,6 +63,6 @@ export function updateMe(userInfo) {
         dispatch({type: SHOW_ALERT })
       }
       setTimeout(()=>{dispatch({type: SHOW_ALERT })}, 4000);
-    })
+    }).catch(e => {console.log(e)})
   }
 }

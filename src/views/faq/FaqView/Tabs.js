@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import ModalAction from 'src/components/ModalActions';
+import FaqDialog from './Form';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -27,9 +28,25 @@ const TabsFaq = props => {
 
   const [expanded, setExpanded] = React.useState(false);
 
+  const [ faqContent, setFaqContent ] = React.useState({
+    id: '',
+    ask: '',
+    answer: ''
+  })
+
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const handleClickOpenModalUpdate = (id, ask, answer) => {
+    setOpenModalUpdate(true);
+    setFaqContent({ id:id, ask:ask, answer:answer });
+  };
+  const handleCloseModalUpdate = () => {
+    setOpenModalUpdate(false);
+  };
+
 
   const [openModal, setOpenModal] = useState(false);
   const handleClickOpenModal = () => {
@@ -53,17 +70,17 @@ const TabsFaq = props => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography className={classes.heading}>{faq.name}</Typography>
+          <Typography className={classes.heading}>{faq.ask}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{faq.status}</Typography>
+          <Typography>{faq.answer}</Typography>
         </AccordionDetails>
         <Divider />
         <AccordionActions>
           <Button onClick={handleClickOpenModal} size="small">
             Delete
           </Button>
-          <Button size="small" color="primary">
+          <Button onClick={() => { handleClickOpenModalUpdate(faq.id, faq.ask, faq.answer) }} size="small" color="primary">
             Update
           </Button>
         </AccordionActions>
@@ -73,6 +90,7 @@ const TabsFaq = props => {
         openModal={openModal}
         onCloseModal={handleCloseModal}
       />
+      <FaqDialog faq={faqContent} open={openModalUpdate} close={handleCloseModalUpdate} />
     </div>
   );
 };
