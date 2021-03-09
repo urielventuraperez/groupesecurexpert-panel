@@ -7,10 +7,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import SaveIcon from '@material-ui/icons/Save';
+import Slide from '@material-ui/core/Slide';
+import ModalToolbar from 'src/components/ModalToolbar';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const CompanyDialog = props => {
   return (
-    <Dialog open={props.open} onClose={props.close}>
+    <Dialog fullScreen  open={props.open} onClose={props.close} TransitionComponent={Transition}>
+      <ModalToolbar title={'Add new Company'} action={'Close'} close={props.close} />
       <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
       <DialogContent>
         <DialogContentText>Add a new company</DialogContentText>
@@ -52,7 +59,7 @@ const CompanyDialog = props => {
         </Button>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.close} color="secondary">
+        <Button variant="contained" onClick={props.close} color="secondary">
           Cancel
         </Button>
         <Button variant="contained" onClick={props.close} color="primary" startIcon={<SaveIcon />}>
