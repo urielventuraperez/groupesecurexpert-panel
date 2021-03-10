@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import SaveIcon from '@material-ui/icons/Save';
 import Slide from '@material-ui/core/Slide';
@@ -18,9 +17,8 @@ const CompanyDialog = props => {
   return (
     <Dialog fullScreen  open={props.open} onClose={props.close} TransitionComponent={Transition}>
       <ModalToolbar title={'Add new Company'} action={'Close'} close={props.close} />
-      <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+      <DialogTitle id="form-dialog-title">¡Manage your companies!</DialogTitle>
       <DialogContent>
-        <DialogContentText>Add a new company</DialogContentText>
         <TextField
           autoFocus
           margin="dense"
