@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Details = () => {
+export default function Detail() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -101,5 +101,3 @@ const Details = () => {
     </div>
   );
 }
-
-export default Details;

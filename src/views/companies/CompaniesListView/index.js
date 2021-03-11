@@ -39,7 +39,7 @@ const CompaniesListView = props => {
                 {filterCompanies.length === 0
                   ? companies.map(company => (
                       <Grid item key={company.id} lg={4} md={6} xs={12}>
-                        <ProductCard
+                        <CompanyCard
                           className={classes.productCard}
                           product={company}
                         />

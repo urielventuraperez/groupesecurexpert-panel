@@ -1,5 +1,5 @@
 import { VIEW_COMPANIES, VIEW_COMPANY, IS_LOAD_COMPANIES, FILTER_COMPANY } from '../../actionTypes/companies';
-import { ENV, API, LSTOKEN } from 'src/utils/environmets';
+import { API, LSTOKEN } from 'src/utils/environmets';
 
 export function getCompanies() {
   return function (dispatch) {
@@ -11,7 +11,7 @@ export function getCompanies() {
       .then( json => {
         return dispatch({
           type: VIEW_COMPANIES,
-          payload: json.data.data
+          payload: json.data
         })
       }).catch(function(e){
         console.log(e.error);
@@ -29,12 +29,17 @@ export function filterCompanies(input) {
 export function getCompany(id) {
   return function(dispatch) {
     dispatch({type: IS_LOAD_COMPANIES});
-    return fetch(`${ENV}/character/${id}`)
+    return fetch(`${API}/api/company/${id}`,
+    {
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    })
     .then(response => response.json())
     .then( json => {
       return dispatch({
         type: VIEW_COMPANY,
-        payload: json
+        payload: json.data
       })
     }).catch(function(e){
       console.log(e.error);

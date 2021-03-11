@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import Page from 'src/components/Page';
+import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
@@ -9,24 +10,31 @@ import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
-import { TextEditor } from 'src/components/TextEditor';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import AddIcon from '@material-ui/icons/Add';
-import Deductibles from './deductible';
-import Details from './detail';
+import { API } from 'src/utils/environmets';
+// import { TextEditor } from 'src/components/TextEditor';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Switch from '@material-ui/core/Switch';
+// import AddIcon from '@material-ui/icons/Add';
+// import Deductibles from './deductible';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3)
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(0),
     textAlign: 'center',
     color: theme.palette.text.secondary
   },
   input: {
     display: 'none'
+  },
+  large: {
+    width: theme.spacing(20),
+    height: 'auto'
   }
 }));
 
@@ -39,14 +47,14 @@ const Company = props => {
 
   const company = match.params.slug;
 
-  const [state, setState] = React.useState({
+  /*const [state, setState] = React.useState({
     checkedA: true,
     checkedB: true
-  });
+  });*/
 
-  const handleChange = event => {
+  /*const handleChange = event => {
     setState({ ...state, [event.target.name]: event.target.checked });
-  };
+  };*/
 
   const onImageChange = event => {
     console.log(event.target.files[0]);
@@ -57,11 +65,9 @@ const Company = props => {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={1}>
-        <Grid item xs={12} md={8}>
+    <Page className={classes.root} title="Companies">
+      <Container maxWidth={false}>
           <Paper className={classes.paper}>
-            <div className={classes.root}>
               <input
                 accept="image/*"
                 className={classes.input}
@@ -71,29 +77,21 @@ const Company = props => {
               />
               <label htmlFor="icon-button-file">
                 <IconButton color="primary" aria-label="upload picture">
-                  <Avatar alt={props.company.name} src={props.company.image} />
+                  <Avatar variant="square" className={classes.large} alt={props.company.name} src={`${API}/storage/companies/${props.company.logo}`} />
                 </IconButton>
               </label>
-            </div>
             <Typography variant="h2">{props.company.name}</Typography>
             <TextField
               fullWidth
               label="Content"
-              InputProps={{
-                inputComponent: TextEditor
-              }}
             />
             <Input
               placeholder="URL Order"
               inputProps={{ 'aria-label': 'description' }}
             />
           </Paper>
-          <Paper>
-            <Details />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Paper className={classes.paper}>
+        {/* <Grid item xs={12} md={4}>
+           <Paper className={classes.paper}>
             <Typography variant="h4">Deductibles</Typography>
             <Deductibles />
             <Input placeholder="Value" inputProps={{ 'aria-label': 'value' }} />
@@ -115,10 +113,10 @@ const Company = props => {
             <IconButton aria-label="add deductible" size="small">
               <AddIcon fontSize="small" />
             </IconButton>
-          </Paper>
-        </Grid>
-      </Grid>
-    </div>
+            </Paper> 
+        </Grid> */}
+        </Container>
+    </Page>
   );
 };
 
