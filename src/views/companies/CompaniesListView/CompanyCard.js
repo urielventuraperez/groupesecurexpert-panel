@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProductCard = ({ className, product, ...rest }) => {
+const CompanyCard = ({ className, product, ...rest }) => {
   const classes = useStyles();
 
   const [isActive, setActive] = useState(true);
@@ -78,7 +78,7 @@ const ProductCard = ({ className, product, ...rest }) => {
         >
           <Avatar
             alt="Product"
-            src={product.image}
+            src={product.logo}
             variant="square"
           />
         </Box>
@@ -141,9 +141,9 @@ const ProductCard = ({ className, product, ...rest }) => {
   );
 };
 
-ProductCard.propTypes = {
+CompanyCard.propTypes = {
   className: PropTypes.string,
   product: PropTypes.object.isRequired
 };
 
-export default ProductCard;
+export default CompanyCard;

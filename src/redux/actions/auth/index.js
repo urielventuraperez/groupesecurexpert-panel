@@ -31,6 +31,16 @@ export function persistLogin () {
 
 export function logOut () {
     return function(dispatch) {
-        dispatch({type: UNSET_TOKEN})
+      fetch(`${API}/api/logout`, {
+        method: 'POST',
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+        }
+      }).then(response => response.json())
+      .then(json => {
+        if (json.status) {
+          dispatch({type: UNSET_TOKEN})
+        }
+      }).catch(e => console.log(e));
     }
 }

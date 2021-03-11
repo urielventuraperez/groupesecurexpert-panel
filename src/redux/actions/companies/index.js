@@ -11,7 +11,7 @@ export function getCompanies() {
       .then( json => {
         return dispatch({
           type: VIEW_COMPANIES,
-          payload: json.results
+          payload: json.data.data
         })
       }).catch(function(e){
         console.log(e.error);

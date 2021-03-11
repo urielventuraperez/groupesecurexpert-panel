@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Toolbar from './Toolbar';
-import ProductCard from './ProductCard';
+import CompanyCard from './CompanyCard';
 import { getCompanies } from 'src/redux/actions/companies';
 import { connect } from 'react-redux';
 import Empty from 'src/components/Empty';
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  productCard: {
+  companyCard: {
     height: '100%'
   }
 }));
@@ -47,7 +47,7 @@ const CompaniesListView = props => {
                     ))
                   : filterCompanies.map(company => (
                       <Grid item key={company.id} lg={4} md={6} xs={12}>
-                        <ProductCard
+                        <CompanyCard
                           className={classes.productCard}
                           product={company}
                         />

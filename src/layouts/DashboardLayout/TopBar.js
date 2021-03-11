@@ -43,11 +43,9 @@ const TopBar = ({
           <Logo width={40} />
         </RouterLink>
         <Box flexGrow={1} />
-        <Hidden mdDown>
           <IconButton onClick={() => logOut()} color="inherit">
             <InputIcon />
           </IconButton>
-        </Hidden>
         <Hidden lgUp>
           <IconButton
             color="inherit"
