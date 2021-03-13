@@ -1,4 +1,5 @@
 import { IS_LOAD, VIEW_USERS, ME } from 'src/redux/actionTypes/users';
+import { UNSET_TOKEN } from 'src/redux/actionTypes/auth';
 import { SHOW_ALERT, ALERT_STATUS } from 'src/redux/actionTypes/alert';
 import { API, ENV, LSTOKEN } from 'src/utils/environmets';
 
@@ -27,10 +28,16 @@ export function me() {
     })
       .then(response => response.json())
       .then(json => {
-        return dispatch({
-          type: ME,
-          payload: json.data
-        })
+        if (json.status) {
+          return dispatch({
+            type: ME,
+            payload: json.data
+          })
+        } else {
+          return dispatch({
+            type: UNSET_TOKEN
+          })
+        }
       })
       .catch((e) => console.log(e))
   }
