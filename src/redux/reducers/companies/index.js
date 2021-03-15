@@ -1,4 +1,4 @@
-import { VIEW_COMPANIES, IS_LOAD_COMPANIES, VIEW_COMPANY, FILTER_COMPANY } from "../../actionTypes/companies";
+import { VIEW_COMPANIES, IS_LOAD_COMPANIES, VIEW_COMPANY, FILTER_COMPANY, ADD_COMPANY } from "../../actionTypes/companies";
 
 const initialState = {
   isLoadCompanies: false,
@@ -16,11 +16,13 @@ function reducer(state = initialState, action) {
         { ...state, isLoadCompanies: false },
         { companies: action.payload.slice(0,6) }
       );
+    case ADD_COMPANY:
+      return { ...state, isLoadCompanies:false, companies:[...state.companies, action.payload] }
     case VIEW_COMPANY:
       return Object.assign(
         { ...state, isLoadCompanies: false },
         { company: action.payload }
-      )
+    )
     case FILTER_COMPANY:
       return Object.assign(
         {...state, isLoadCompanies: false},

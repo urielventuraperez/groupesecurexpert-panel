@@ -1,5 +1,6 @@
-import { VIEW_COMPANIES, VIEW_COMPANY, IS_LOAD_COMPANIES, FILTER_COMPANY } from '../../actionTypes/companies';
+import { VIEW_COMPANIES, VIEW_COMPANY, IS_LOAD_COMPANIES, FILTER_COMPANY, ADD_COMPANY } from '../../actionTypes/companies';
 import { API, LSTOKEN } from 'src/utils/environmets';
+import { SHOW_ALERT, ALERT_STATUS } from 'src/redux/actionTypes/alert';
 
 export function getCompanies() {
   return function (dispatch) {
@@ -17,6 +18,38 @@ export function getCompanies() {
         console.log(e.error);
       })
   }
+}
+
+export function addCompany(data) {
+  console.log(data);
+  let formData = new FormData();
+  Object.keys(data).forEach(key => formData.append(key, data[key]));
+
+  return function(dispatch) {
+    dispatch({type: IS_LOAD_COMPANIES});
+    return fetch(`${API}/api/company`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      },
+      body : formData
+    })
+    .then( response => response.json() )
+    .then( json => {
+      if (json.status) {
+        dispatch({type: SHOW_ALERT })
+        dispatch({type: ALERT_STATUS, payload:true})
+        dispatch({ type: ADD_COMPANY, payload: data })
+      }
+      else {
+        dispatch({type: ALERT_STATUS, payload:false})
+        dispatch({type: SHOW_ALERT })
+      }
+      return setTimeout(()=>{dispatch({type: SHOW_ALERT })}, 4000);
+    }).catch(e => { console.log(e) })
+  }
+
+
 }
 
 export function filterCompanies(input) {

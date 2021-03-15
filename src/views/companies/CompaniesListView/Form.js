@@ -11,6 +11,8 @@ import Slide from '@material-ui/core/Slide';
 import ModalToolbar from 'src/components/ModalToolbar';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { connect } from 'react-redux';
+import { addCompany } from 'src/redux/actions/companies';
 
 const FaqSchema = Yup.object().shape({
   name: Yup.string()
@@ -47,7 +49,29 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const CompanyDialog = props => {
 
   const classes = useStyles();
-  const [file, setFile] = React.useState(null);
+  const [preview, setPreview] = React.useState()
+  const [selectedFile, setSelectedFile] = React.useState()
+
+  // create a preview as a side effect, whenever selected file is changed
+  React.useEffect(() => {
+      if (!selectedFile) {
+          setPreview(undefined)
+          return
+      }
+      const objectUrl = URL.createObjectURL(selectedFile)
+      setPreview(objectUrl)
+
+      return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedFile])
+
+  const onSelectFile = e => {
+      if (!e.target.files || e.target.files.length === 0) {
+          setSelectedFile(undefined)
+          return
+      }
+
+      setSelectedFile(e.target.files[0])
+  }
 
   return (
     <Dialog
@@ -71,7 +95,8 @@ const CompanyDialog = props => {
         }}
         validationSchema={FaqSchema}
         onSubmit={values => {
-          console.log(values)
+          props.addCompany(values);
+          setSelectedFile(undefined)
         }}
       >
         {({
@@ -150,9 +175,9 @@ const CompanyDialog = props => {
                   name="logo"
                   accept="image/x-png,image/gif,image/jpeg"
                   hidden
-                  onChange = { (e)=>{ setFieldValue("logo", e.currentTarget.files[0]); setFile(URL.createObjectURL(e.currentTarget.files[0]))} }
+                  onChange = { (e) => {  setFieldValue("logo", e.currentTarget.files[0]); onSelectFile(e) } }
                 />
-                <img className={classes.img} src={file} />
+                {selectedFile &&  <img className={classes.img} src={preview} /> }
               </Button>
             </DialogContent>
             <DialogActions>
@@ -181,4 +206,13 @@ const CompanyDialog = props => {
   );
 };
 
-export default CompanyDialog;
+const mapDispatchToProps = dispatch => {
+  return {
+    addCompany: (company) => {
+      dispatch(addCompany(company));
+    }
+  };
+};
+
+
+export default connect(null, mapDispatchToProps)(CompanyDialog);

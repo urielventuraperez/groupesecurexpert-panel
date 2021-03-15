@@ -6,6 +6,7 @@ import CompanyCard from './CompanyCard';
 import { getCompanies } from 'src/redux/actions/companies';
 import { connect } from 'react-redux';
 import Empty from 'src/components/Empty';
+import CustomSnackbar from 'src/components/Alert';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,6 +61,7 @@ const CompaniesListView = props => {
           <Empty title="company" />
         )}
       </Container>
+      <CustomSnackbar open={props.isShow} status={props.alertStatus} text={ props.alertStatus ? 'Successfully added!' : 'Oops, retry again...'} />
     </Page>
   );
 };
@@ -68,7 +70,9 @@ const mapStateToProps = state => {
   return {
     companies: state.companies.companies,
     isLoadCompanies: state.companies.isLoadCompanies,
-    filterCompanies: state.companies.companiesResult
+    filterCompanies: state.companies.companiesResult,
+    isShow: state.alert.isShow,
+    alertStatus: state.alert.status
   };
 };
 
