@@ -125,7 +125,7 @@ const CompanyCard = ({ className, product, ...rest }) => {
           </Grid>
         </Grid>
       </Box>
-      <DeleteCompany open={open} name={product.name} onClose={handleClose} />
+      <DeleteCompany open={open} name={product.name} id={product.id} onClose={handleClose} />
     </Card>
   );
 };

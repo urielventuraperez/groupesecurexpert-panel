@@ -5,6 +5,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { deleteCompany } from 'src/redux/actions/companies';
+import { connect } from 'react-redux';
 
 const DeleteCompany = (props) => {
   return (
@@ -17,19 +19,25 @@ const DeleteCompany = (props) => {
         <DialogTitle id="alert-dialog-title">{"Delete Action"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-              { `Are you sure to delete the ${props.name} company` }
+              { `Are you sure to delete ${props.name} company` }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={props.onClose} autoFocus>
-            Disagree
+          <Button color="secondary" onClick={props.onClose} autoFocus>
+            Cancel
           </Button>
-          <Button color="secondary" onClick={props.onClose}>
-            Agree
+          <Button color="primary" onClick={ () => { props.deleteCompany(props.id); props.onClose } }>
+            Yes
           </Button>
         </DialogActions>
       </Dialog>
   );
 }
 
-export default DeleteCompany;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteCompany: (id) => { dispatch(deleteCompany(id)) }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(DeleteCompany);

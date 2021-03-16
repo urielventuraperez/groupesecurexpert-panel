@@ -79,7 +79,6 @@ export function updateFaq( faq, id ) {
 }
 
 export function deleteFaq( faq ) {
-  
   return function(dispatch) {
     dispatch({ type: IS_LOAD_FAQ });
     return fetch(`${API}/api/faq/${faq}`, {
@@ -90,8 +89,14 @@ export function deleteFaq( faq ) {
     }).then( response => response.json() )
     .then( json => {
       if(json.status){
+        dispatch({type: SHOW_ALERT })
+        dispatch({type: ALERT_STATUS, payload:true})
         return dispatch({type: DELETE_FAQ, payload: faq})
+      } else {
+        dispatch({type: ALERT_STATUS, payload:false})
+        dispatch({type: SHOW_ALERT })
       }
-    } )
+      return setTimeout(()=>{dispatch({type: SHOW_ALERT })}, 4000);
+    } ).catch(e => console.log(e))
   }
 }
