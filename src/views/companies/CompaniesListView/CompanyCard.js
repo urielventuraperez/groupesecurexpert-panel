@@ -48,7 +48,7 @@ const CompanyCard = ({ className, product, ...rest }) => {
 
   React.useEffect(() => {
     setActive(product.active)
-  }, [product.active])
+  }, [])
 
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
