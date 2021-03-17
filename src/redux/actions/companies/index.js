@@ -59,9 +59,15 @@ export function deleteCompany(idCompany) {
       }).then( response => response.json() )
       .then(json => {
         if ( json.status ){
+          dispatch({type: SHOW_ALERT })
+          dispatch({type: ALERT_STATUS, payload:true})
           dispatch({ type: DELETE_COMPANY, payload: idCompany })
+        } else {
+          dispatch({type: ALERT_STATUS, payload:false})
+          dispatch({type: SHOW_ALERT })
         }
-      })
+        return setTimeout(()=>{dispatch({type: SHOW_ALERT })}, 4000);
+      }).catch(e => { console.log(e) })
     }
 }
 

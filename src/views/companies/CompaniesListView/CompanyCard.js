@@ -19,7 +19,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import DeleteCompany from './DeleteCompany';
-import { API } from 'src/utils/environmets';
+import { API, LSTOKEN } from 'src/utils/environmets';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
@@ -46,6 +46,10 @@ const CompanyCard = ({ className, product, ...rest }) => {
 
   const [isActive, setActive] = useState(true);
 
+  React.useEffect(() => {
+    setActive(product.active)
+  }, [product.active])
+
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -61,6 +65,19 @@ const CompanyCard = ({ className, product, ...rest }) => {
     return momentString;
   };
 
+  const activeCompany = async (id) => {
+    let response = await fetch(`${API}/api/company/${id}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    });
+    if (response.status) {
+      let active = await response.json();
+      setActive(active.data);
+    }
+  }
+
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader
@@ -68,7 +85,7 @@ const CompanyCard = ({ className, product, ...rest }) => {
           <Box>
             <IconButton
               color="secondary"
-              onClick={() => setActive(!isActive)}
+              onClick={() => {activeCompany(product.id)}}
               aria-label="settings"
             >
               {isActive ? <VisibilityIcon /> : <VisibilityOffIcon />}

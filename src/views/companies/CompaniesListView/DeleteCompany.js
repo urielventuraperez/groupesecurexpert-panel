@@ -9,6 +9,12 @@ import { deleteCompany } from 'src/redux/actions/companies';
 import { connect } from 'react-redux';
 
 const DeleteCompany = (props) => {
+
+  const deleteCompany = (id) => {
+    props.deleteCompany(id);
+    props.onClose;
+  }
+
   return (
       <Dialog
         open={props.open}
@@ -26,7 +32,7 @@ const DeleteCompany = (props) => {
           <Button color="secondary" onClick={props.onClose} autoFocus>
             Cancel
           </Button>
-          <Button color="primary" onClick={ () => { props.deleteCompany(props.id); props.onClose } }>
+          <Button color="primary" onClick={ () => { deleteCompany(props.id) } }>
             Yes
           </Button>
         </DialogActions>

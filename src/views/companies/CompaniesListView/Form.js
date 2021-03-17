@@ -175,7 +175,7 @@ const CompanyDialog = props => {
                   name="logo"
                   accept="image/x-png,image/gif,image/jpeg"
                   hidden
-                  onChange = { (e) => {  setFieldValue("logo", e.currentTarget.files[0]); onSelectFile(e) } }
+                  onChange = { (e) => { setFieldValue("logo", e.currentTarget.files[0]); onSelectFile(e) } }
                 />
                 {selectedFile &&  <img className={classes.img} src={preview} /> }
               </Button>

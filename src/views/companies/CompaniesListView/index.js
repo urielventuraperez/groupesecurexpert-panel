@@ -61,7 +61,7 @@ const CompaniesListView = props => {
           <Empty title="company" />
         )}
       </Container>
-      <CustomSnackbar open={props.isShow} status={props.alertStatus} text={ props.alertStatus ? 'Successfully added!' : 'Oops, retry again...'} />
+      <CustomSnackbar open={props.isShow} status={props.alertStatus} text={ props.alertStatus ? 'Successfully executed!' : 'Oops, retry again...'} />
     </Page>
   );
 };
