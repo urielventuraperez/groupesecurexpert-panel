@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
+import { Box, Grid } from '@material-ui/core/';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import { getCompany } from 'src/redux/actions/companies';
 import Typography from '@material-ui/core/Typography';
-import Input from '@material-ui/core/Input';
-import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import { API } from 'src/utils/environmets';
+import Insurances from './insurances';
 // import { TextEditor } from 'src/components/TextEditor';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Switch from '@material-ui/core/Switch';
@@ -24,8 +23,8 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  paper: {
-    padding: theme.spacing(0),
+  container: {
+    padding: theme.spacing(4),
     textAlign: 'center',
     color: theme.palette.text.secondary
   },
@@ -56,40 +55,24 @@ const Company = props => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };*/
 
-  const onImageChange = event => {
-    console.log(event.target.files[0]);
-  };
-
   useEffect(() => {
     getCompany(company);
   }, []);
 
   return (
     <Page className={classes.root} title="Companies">
-      <Container maxWidth={false}>
-          <Paper className={classes.paper}>
-              <input
-                accept="image/*"
-                className={classes.input}
-                id="icon-button-file"
-                type="file"
-                onChange={onImageChange}
-              />
-              <label htmlFor="icon-button-file">
-                <IconButton color="primary" aria-label="upload picture">
-                  <Avatar variant="square" className={classes.large} alt={props.company.name} src={`${API}/storage/companies/${props.company.logo}`} />
-                </IconButton>
-              </label>
+      <Container className={classes.container}>
+            <IconButton color="primary" aria-label="upload picture">
+              <Avatar variant="square" className={classes.large} alt={props.company.name} src={`${API}/storage/companies/${props.company.logo}`} />
+            </IconButton>
             <Typography variant="h2">{props.company.name}</Typography>
-            <TextField
-              fullWidth
-              label="Content"
-            />
-            <Input
-              placeholder="URL Order"
-              inputProps={{ 'aria-label': 'description' }}
-            />
-          </Paper>
+            <Box mt={3}>
+        <Grid container spacing={3}>
+          { props.company.insurances.map( insurance => (
+            <Insurances key={insurance.id} />
+            ) ) }
+        </Grid>
+        </Box>
         {/* <Grid item xs={12} md={4}>
            <Paper className={classes.paper}>
             <Typography variant="h4">Deductibles</Typography>
