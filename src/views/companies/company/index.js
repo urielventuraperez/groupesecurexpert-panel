@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { API } from 'src/utils/environmets';
 import Insurances from './insurances';
+import Empty from 'src/components/Empty';
 // import { TextEditor } from 'src/components/TextEditor';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Switch from '@material-ui/core/Switch';
@@ -67,12 +68,17 @@ const Company = props => {
             </IconButton>
             <Typography variant="h2">{props.company.name}</Typography>
             <Box mt={3}>
-        <Grid container spacing={3}>
-          { props.company.insurances.map( insurance => (
-            <Insurances key={insurance.id} />
-            ) ) }
-        </Grid>
-        </Box>
+            { props.company.insurances.length !== 0 ? (
+            <Grid container spacing={3}>
+              { props.company.insurances.map( insurance => (
+                <Insurances key={insurance.id} />
+              ))}
+              </Grid>
+            )
+            :
+            <Empty title="Insurances" />
+            }
+            </Box>
         {/* <Grid item xs={12} md={4}>
            <Paper className={classes.paper}>
             <Typography variant="h4">Deductibles</Typography>
