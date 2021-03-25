@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
 import Container from '@material-ui/core/Container';
-import { Box, Grid } from '@material-ui/core/';
+// import { Box, Grid } from '@material-ui/core/';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import { getCompany } from 'src/redux/actions/companies';
@@ -11,6 +11,9 @@ import { connect } from 'react-redux';
 import { API } from 'src/utils/environmets';
 import Insurances from './insurances';
 import Empty from 'src/components/Empty';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 // import { TextEditor } from 'src/components/TextEditor';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Switch from '@material-ui/core/Switch';
@@ -35,7 +38,15 @@ const useStyles = makeStyles(theme => ({
   large: {
     width: theme.spacing(20),
     height: 'auto'
-  }
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  extendedIcon: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2)
+  },
 }));
 
 const Company = props => {
@@ -43,9 +54,9 @@ const Company = props => {
 
   // const [logo, setLogo] = useState('');
 
-  const { match, getCompany } = props;
+  const { match, getCompany, company, isLoad } = props;
 
-  const company = match.params.slug;
+  const id = match.params.slug;
 
   /*const [state, setState] = React.useState({
     checkedA: true,
@@ -57,29 +68,31 @@ const Company = props => {
   };*/
 
   useEffect(() => {
-    getCompany(company);
-  }, []);
+    getCompany(id);
+  }, [getCompany]);
 
   return (
-    <Page className={classes.root} title="Companies">
-      <Container className={classes.container}>
-            <IconButton color="primary" aria-label="upload picture">
-              <Avatar variant="square" className={classes.large} alt={props.company.name} src={`${API}/storage/companies/${props.company.logo}`} />
-            </IconButton>
-            <Typography variant="h2">{props.company.name}</Typography>
-            <Box mt={3}>
-            { props.company.insurances.length !== 0 ? (
-            <Grid container spacing={3}>
-              { props.company.insurances.map( insurance => (
-                <Insurances key={insurance.id} />
-              ))}
-              </Grid>
-            )
-            :
-            <Empty title="Insurances" />
-            }
-            </Box>
-        {/* <Grid item xs={12} md={4}>
+    <div>
+      {!isLoad ? (
+        <Page className={classes.root} title={`${company.name}`}>
+        <Container className={classes.container}>
+          <IconButton color="primary" aria-label="upload picture">
+            <Avatar
+              variant="square"
+              className={classes.large}
+              alt={company.name}
+              src={`${API}/storage/companies/${company.logo}`}
+            />
+          </IconButton>
+          <Typography variant="h2">{company.name}</Typography>
+          {Array.isArray(company.insurances) && company.insurances.length ? (
+            company.insurances.map(insurance => {
+              <Insurances key={insurance.id} />;
+            })
+          ) : (
+            <Empty title={'Insurances'} />
+          )}
+          {/* <Grid item xs={12} md={4}>
            <Paper className={classes.paper}>
             <Typography variant="h4">Deductibles</Typography>
             <Deductibles />
@@ -105,7 +118,18 @@ const Company = props => {
             </Paper> 
         </Grid> */}
         </Container>
-    </Page>
+        <Fab variant="extended" color="primary" aria-label="add" className={classes.extendedIcon}>
+          <AddIcon className={classes.margin}/>
+          Add Insurance
+        </Fab>
+        </Page>
+      ) : 
+      <CircularProgress     style={{
+        position: 'absolute', left: '50%', top: '50%',
+        transform: 'translate(-50%, -50%)'
+    }} color="secondary" />
+      }
+    </div>
   );
 };
 

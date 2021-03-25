@@ -38,7 +38,7 @@ export default function Empty(props) {
               <Grid className={classes.center} item xs>
                 <PriorityHighIcon className={classes.icon} />
                 <Typography gutterBottom variant="h3">
-                  {`It´s time to add your first ${props.title}`}
+                  {`It's time to add your first ${props.title}`}
                 </Typography>
               </Grid>
             </Grid>

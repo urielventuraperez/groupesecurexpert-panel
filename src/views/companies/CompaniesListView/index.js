@@ -33,7 +33,7 @@ const CompaniesListView = props => {
     <Page className={classes.root} title="Companies">
       <Container maxWidth={false}>
         <Toolbar />
-        {companies.length !== 0 ? (
+        { Array.isArray(companies) && companies.length ? (
           <div>
             <Box mt={3}>
               <Grid container spacing={3}>
