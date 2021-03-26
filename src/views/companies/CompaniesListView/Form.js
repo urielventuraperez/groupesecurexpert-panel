@@ -14,7 +14,7 @@ import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { addCompany } from 'src/redux/actions/companies';
 
-const FaqSchema = Yup.object().shape({
+const CompanySchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too Short!')
     .max(150, 'Too Long!')
@@ -93,7 +93,7 @@ const CompanyDialog = props => {
           quote: '',
           order_url: ''
         }}
-        validationSchema={FaqSchema}
+        validationSchema={CompanySchema}
         onSubmit={values => {
           props.addCompany(values);
           setSelectedFile(undefined)

@@ -14,7 +14,7 @@ import {
   Button,
   makeStyles
 } from '@material-ui/core';
-import FaceIcon from '@material-ui/icons/Face';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import DoneIcon from '@material-ui/icons/Done';
 import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -148,7 +148,7 @@ const CompanyCard = ({ className, company }) => {
             </Grid>
           ) : (
             <Grid className={classes.statsItem} item>
-              <Chip icon={<FaceIcon />} variant="outlined" color="primary" label="Clickable Link" component="a" href="#chip" clickable />
+              <Chip variant="outlined" icon={<SentimentVeryDissatisfiedIcon />} color="secondary" label="No insurances" component="a" href="#chip" clickable />
             </Grid>
           ) }
 

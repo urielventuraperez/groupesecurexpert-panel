@@ -7,6 +7,7 @@ import { getCompanies } from 'src/redux/actions/companies';
 import { connect } from 'react-redux';
 import Empty from 'src/components/Empty';
 import CustomSnackbar from 'src/components/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,11 +22,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CompaniesListView = props => {
-  const { getCompanies, companies, filterCompanies } = props;
+  const { getCompanies, companies, filterCompanies, isLoadCompanies } = props;
 
   useEffect(() => {
     getCompanies();
-  }, [getCompanies]);
+  }, []);
 
   const classes = useStyles();
 
@@ -33,7 +34,8 @@ const CompaniesListView = props => {
     <Page className={classes.root} title="Companies">
       <Container maxWidth={false}>
         <Toolbar />
-        { Array.isArray(companies) && companies.length ? (
+        { !isLoadCompanies ? 
+        Array.isArray(companies) && companies.length ? (
           <div>
             <Box mt={3}>
               <Grid container spacing={3}>
@@ -57,7 +59,18 @@ const CompaniesListView = props => {
           </div>
         ) : (
           <Empty title="company" />
-        )}
+        )
+        :
+                <CircularProgress
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}
+                color="secondary"
+              />
+        }
       </Container>
       <CustomSnackbar open={props.isShow} status={props.alertStatus} text={ props.alertStatus ? 'Successfully executed!' : 'Oops, retry again...'} />
     </Page>
