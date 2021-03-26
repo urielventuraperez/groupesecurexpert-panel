@@ -14,6 +14,9 @@ import {
   Button,
   makeStyles
 } from '@material-ui/core';
+import FaceIcon from '@material-ui/icons/Face';
+import DoneIcon from '@material-ui/icons/Done';
+import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,16 +41,19 @@ const useStyles = makeStyles(theme => ({
   large: {
     width: theme.spacing(15),
     height: theme.spacing(15)
+  },
+  chip: {
+    marginLeft: theme.spacing(1)
   }
 }));
 
-const CompanyCard = ({ className, product, ...rest }) => {
+const CompanyCard = ({ className, company }) => {
   const classes = useStyles();
 
   const [isActive, setActive] = useState(true);
 
   React.useEffect(() => {
-    setActive(product.active)
+    setActive(company.active)
   }, [])
 
   const [open, setOpen] = useState(false);
@@ -79,13 +85,13 @@ const CompanyCard = ({ className, product, ...rest }) => {
   }
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={clsx(classes.root, className)}>
       <CardHeader
         action={
           <Box>
             <IconButton
               color="secondary"
-              onClick={() => {activeCompany(product.id)}}
+              onClick={() => {activeCompany(company.id)}}
               aria-label="settings"
             >
               {isActive ? <VisibilityIcon /> : <VisibilityOffIcon />}
@@ -103,8 +109,8 @@ const CompanyCard = ({ className, product, ...rest }) => {
       <CardContent>
         <Box display="flex" justifyContent="center" mb={3}>
           <Avatar
-            alt="Product"
-            src={`${API}/storage/companies/${product.logo}`}
+            alt="Company Image"
+            src={`${API}/storage/companies/${company.logo}`}
             variant="square"
             className={classes.large}
           />
@@ -115,26 +121,41 @@ const CompanyCard = ({ className, product, ...rest }) => {
           gutterBottom
           variant="h4"
         >
-          {product.name}
+          {company.name}
         </Typography>
         <Typography align="center" color="textPrimary" variant="body1">
-          {product.status}
+          {company.status}
         </Typography>
       </CardContent>
       <Box flexGrow={1} />
       <Divider />
       <Box p={2}>
-        <Grid container justify="space-between" spacing={2}>
+        <Grid direction="column" container justify="space-between" spacing={2}>
           <Grid className={classes.statsItem} item>
             <AccessTimeIcon className={classes.statsIcon} color="action" />
             <Typography color="textSecondary" display="inline" variant="body2">
-              {`Added at ${addedMoment(product.created_at)}`}
+              {`Added at ${addedMoment(company.created_at)}`}
             </Typography>
           </Grid>
+
+          { Array.isArray(company.insurances) && company.insurances.length ? (
+            <Grid className={classes.statsItem} item>
+              {
+                company.insurances.map( insurance => (
+                  <Chip key={insurance.id} className={classes.chip} icon={<DoneIcon />} variant="outlined" color="primary" label={insurance.insurance_name} component="a" href="#chip" clickable />
+                  ))
+              }  
+            </Grid>
+          ) : (
+            <Grid className={classes.statsItem} item>
+              <Chip icon={<FaceIcon />} variant="outlined" color="primary" label="Clickable Link" component="a" href="#chip" clickable />
+            </Grid>
+          ) }
+
           <Grid className={classes.statsItem} item>
             <Button
               component={Link}
-              to={`/app/company/${product.id}`}
+              to={`/app/company/${company.id}`}
               color="primary"
             >
               View more
@@ -142,14 +163,14 @@ const CompanyCard = ({ className, product, ...rest }) => {
           </Grid>
         </Grid>
       </Box>
-      <DeleteCompany open={open} name={product.name} id={product.id} onClose={handleClose} />
+      <DeleteCompany open={open} name={company.name} id={company.id} onClose={handleClose} />
     </Card>
   );
 };
 
 CompanyCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired
+  company: PropTypes.object.isRequired
 };
 
 export default CompanyCard;
