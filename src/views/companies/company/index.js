@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
 import Container from '@material-ui/core/Container';
@@ -6,7 +7,6 @@ import { Box, Grid } from '@material-ui/core/';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import { getCompany } from 'src/redux/actions/companies';
-import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { API } from 'src/utils/environmets';
 import Insurances from './insurances';
@@ -14,6 +14,9 @@ import Empty from 'src/components/Empty';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+
 // import { TextEditor } from 'src/components/TextEditor';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Switch from '@material-ui/core/Switch';
@@ -29,7 +32,6 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     padding: theme.spacing(4),
-    textAlign: 'center',
     color: theme.palette.text.secondary
   },
   input: {
@@ -39,14 +41,29 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(20),
     height: 'auto'
   },
+  flexContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+  },
+  flexContainerItem: {
+    flexGrow: 1,
+    [theme.breakpoints.up('md')]: {
+      marginLeft: theme.spacing(1)
+    },
+  },
   margin: {
-    margin: theme.spacing(1),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   extendedIcon: {
     position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2)
-  },
+  }
 }));
 
 const Company = props => {
@@ -75,69 +92,86 @@ const Company = props => {
     <div>
       {!isLoad ? (
         <Page className={classes.root} title={`${company.name}`}>
-        <Container className={classes.container}>
-          <Grid>
-          <IconButton color="primary" aria-label="upload picture">
-            <Avatar
-              variant="square"
-              className={classes.large}
-              alt={company.name}
-              src={`${API}/storage/companies/${company.logo}`}
-            />
-          </IconButton>
-          <Typography variant="h2">{company.name}</Typography>
-          </Grid>
-          {Array.isArray(company.insurances) && company.insurances.length ? (
-            <Box mt={5}>
-            <Grid container spacing={2}>
-              {
-                company.insurances.map(insurance => 
-                  <Grid key={insurance.id} item>
-                    <Insurances name={insurance.name} />
-                  </Grid>)
-              }
-            </Grid>
-            </Box>
-            ) : (
-            <Empty title={'Insurances'} />
-          )}
-          {/* <Grid item xs={12} md={4}>
-           <Paper className={classes.paper}>
-            <Typography variant="h4">Deductibles</Typography>
-            <Deductibles />
-            <Input placeholder="Value" inputProps={{ 'aria-label': 'value' }} />
-            <Input
-              placeholder="Percentage"
-              inputProps={{ 'aria-label': 'percentage' }}
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={state.checkedB}
-                  onChange={handleChange}
-                  name="checkedB"
-                  color="primary"
+          <Container className={classes.container}>
+            <Grid>
+              <FormControl fullWidth className={clsx(classes.flexContainer)}>
+              <IconButton className={classes.flexContainerItem} color="primary" aria-label="upload picture">
+                <Avatar
+                  variant="square"
+                  className={classes.large}
+                  alt={company.name}
+                  src={`${API}/storage/companies/${company.logo}`}
                 />
-              }
-              label="Saving"
-            />
-            <IconButton aria-label="add deductible" size="small">
-              <AddIcon fontSize="small" />
-            </IconButton>
-            </Paper> 
-        </Grid> */}
-        </Container>
-        <Fab variant="extended" color="primary" aria-label="add" className={classes.extendedIcon}>
-          <AddIcon className={classes.margin}/>
-          Add Insurance
-        </Fab>
+              </IconButton>
+              <TextField 
+                id="standard-required" 
+                label="Company Name" 
+                className={clsx(classes.margin, classes.flexContainerItem)}
+                variant="outlined"
+                defaultValue={company.name} />
+              <TextField 
+                id="standard-required-url" 
+                className={clsx(classes.margin, classes.flexContainerItem)}
+                variant="outlined"
+                label="Company Order Website" 
+                defaultValue={company.order_url} />
+              </FormControl>
+            <FormControl fullWidth className={classes.margin}>
+              <TextField
+                id="standard-multiline-static"
+                label="Description"
+                variant="outlined"
+                multiline
+                rows={5}
+                defaultValue={company.description}
+              />
+              </FormControl>
+              <FormControl fullWidth className={classes.margin}>
+              <TextField
+                id="standard-multiline-static"
+                label="Quote"
+                multiline
+                variant="outlined"
+                rows={4}
+                defaultValue={company.quote}
+              />
+              </FormControl>
+            </Grid>
+            {Array.isArray(company.insurances) && company.insurances.length ? (
+              <Box mt={5}>
+                <Grid container spacing={2}>
+                  {company.insurances.map(insurance => (
+                    <Grid key={insurance.id} item>
+                      <Insurances name={insurance.name} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            ) : (
+              <Empty title={'Insurances'} />
+            )}
+          </Container>
+          <Fab
+            variant="extended"
+            color="primary"
+            aria-label="add"
+            className={classes.extendedIcon}
+          >
+            <AddIcon className={classes.margin} />
+            Add Insurance
+          </Fab>
         </Page>
-      ) : 
-      <CircularProgress     style={{
-        position: 'absolute', left: '50%', top: '50%',
-        transform: 'translate(-50%, -50%)'
-    }} color="secondary" />
-      }
+      ) : (
+        <CircularProgress
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)'
+          }}
+          color="secondary"
+        />
+      )}
     </div>
   );
 };
