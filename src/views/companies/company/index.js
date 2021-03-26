@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
 import Container from '@material-ui/core/Container';
-// import { Box, Grid } from '@material-ui/core/';
+import { Box, Grid } from '@material-ui/core/';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import { getCompany } from 'src/redux/actions/companies';
@@ -76,6 +76,7 @@ const Company = props => {
       {!isLoad ? (
         <Page className={classes.root} title={`${company.name}`}>
         <Container className={classes.container}>
+          <Grid>
           <IconButton color="primary" aria-label="upload picture">
             <Avatar
               variant="square"
@@ -85,11 +86,19 @@ const Company = props => {
             />
           </IconButton>
           <Typography variant="h2">{company.name}</Typography>
+          </Grid>
           {Array.isArray(company.insurances) && company.insurances.length ? (
-            company.insurances.map(insurance => {
-              <Insurances key={insurance.id} />;
-            })
-          ) : (
+            <Box mt={5}>
+            <Grid container spacing={2}>
+              {
+                company.insurances.map(insurance => 
+                  <Grid key={insurance.id} item>
+                    <Insurances name={insurance.name} />
+                  </Grid>)
+              }
+            </Grid>
+            </Box>
+            ) : (
             <Empty title={'Insurances'} />
           )}
           {/* <Grid item xs={12} md={4}>
