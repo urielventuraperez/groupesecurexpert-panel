@@ -1,16 +1,16 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import { Route, Redirect, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import { LSTOKEN } from 'src/utils/environmets';
 
-const ProtectedRoutes = ({ component, isLogged, ...rest }) => {
+const ProtectedRoutes = ({ component, ...rest }) => {
   let Component = component;
+  let isLogged = localStorage.getItem(LSTOKEN);
   
   return (
     <Route
       {...rest}
       render={props =>
-        isLogged === true ? (
+        isLogged ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -25,14 +25,4 @@ const ProtectedRoutes = ({ component, isLogged, ...rest }) => {
   );
 };
 
-ProtectedRoutes.propTypes = {
-  isLogged: PropTypes.bool
-}
-
-const mapStateToProps = state => {
-  return {
-    isLogged: state.auth.isLogged
-  };
-};
-
-export default withRouter(connect(mapStateToProps)(ProtectedRoutes));
+export default withRouter(ProtectedRoutes);

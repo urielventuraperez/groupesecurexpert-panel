@@ -16,7 +16,9 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { logIn } from 'src/redux/actions/auth';
-import { withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom";
+import { LSTOKEN } from 'src/utils/environmets';
+
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -85,8 +87,10 @@ const SignInSide = (props) => {
 
   const onLogin = (user) => {
     logIn(user);
-    setTimeout(()=> { setOpen(true) }, 1000)
-  }
+    setTimeout(()=> { setOpen(true) }, 1000);
+    setTimeout(()=> { 
+      localStorage.getItem(LSTOKEN) && props.history.push('/') }, 1800);
+    }
 
   
   return (

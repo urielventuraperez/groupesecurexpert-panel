@@ -16,9 +16,6 @@ import ProtectedRoutes from './protected';
 
 const RenderRoutes = (
   <Switch>
-    {/** Public routes **/}
-    <Route exact path='/login' component={LoginView}></Route>
-
     {/** Protected routes **/}
     <ProtectedRoutes exact path='/' component={DashboardView} />
     <ProtectedRoutes exact path='/app/dashboard' component={DashboardView} />
@@ -29,6 +26,9 @@ const RenderRoutes = (
     <ProtectedRoutes exact path='/app/settings' component={SettingsView} />
     <ProtectedRoutes exact path='/app/register' component={RegisterView} />
     <ProtectedRoutes exact path='/app/faq' component={FaqView} />
+
+    {/** Public routes **/}
+    <Route exact path='/login' component={LoginView}></Route>
 
     {/* Not found routes */}
     <Route exact path="/not-found" component={NotFoundView} />

@@ -3,7 +3,6 @@ import { ME } from 'src/redux/actionTypes/users';
 import { API, LSTOKEN, LSUSER } from 'src/utils/environmets';
 
 export function logIn (user) {
-    // const history = useHistory();
     let formData = new FormData();
     formData.append('email', user.email);
     formData.append('password', user.password);
@@ -17,7 +16,7 @@ export function logIn (user) {
                     dispatch({ type: ME, payload: json.data.user })
                     localStorage.setItem(LSUSER, JSON.stringify(json.data.user))
                 }
-                return dispatch({ type: SET_TOKEN });
+                dispatch({ type: SET_TOKEN });
             })
             .catch(e => { console.log(e) })
     }
