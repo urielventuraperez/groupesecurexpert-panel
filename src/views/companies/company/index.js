@@ -5,12 +5,13 @@ import Container from '@material-ui/core/Container';
 import { Box, Grid } from '@material-ui/core/';
 import { getCompany } from 'src/redux/actions/companies';
 import { connect } from 'react-redux';
-import Insurances from './insurances';
+import Insurances from './insurance';
 import Empty from 'src/components/Empty';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import CompanyForm from './form';
+import { NavLink as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -93,6 +94,8 @@ const Company = props => {
             color="primary"
             aria-label="add"
             className={classes.extendedIcon}
+            component={RouterLink}
+            to={`/app/company/${id}/insurance`}
           >
             <AddIcon className={classes.margin} />
             Add Insurance
