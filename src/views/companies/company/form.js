@@ -6,6 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import FormControl from '@material-ui/core/FormControl';
 import { API } from 'src/utils/environmets';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
@@ -22,8 +24,8 @@ const CompanySchema = Yup.object().shape({
     .min(5, 'Too Short!')
     .max(550, 'Too Long!'),
   order_url: Yup.string()
-    .min(5, "Too Short!")
-    .max(300, "Too Long!")
+    .min(5, 'Too Short!')
+    .max(300, 'Too Long!')
 });
 
 const useStyles = makeStyles(theme => ({
@@ -33,12 +35,12 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  container: {
-    padding: theme.spacing(4),
-    color: theme.palette.text.secondary
-  },
   input: {
     display: 'none'
+  },
+  button: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2)
   },
   large: {
     width: theme.spacing(20),
@@ -50,13 +52,13 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       alignItems: 'center'
-    },
+    }
   },
   flexContainerItem: {
     flexGrow: 1,
     [theme.breakpoints.up('md')]: {
       marginLeft: theme.spacing(1)
-    },
+    }
   },
   margin: {
     marginTop: theme.spacing(2),
@@ -69,9 +71,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CompanyForm = (props) => {
+const CompanyForm = props => {
   const classes = useStyles();
-  const {company} = props;
+  const { company } = props;
   return (
     <div key={1}>
       <Formik
@@ -83,59 +85,60 @@ const CompanyForm = (props) => {
         }}
         validationSchema={CompanySchema}
         onSubmit={values => {
-          console.log(values)
-      }}>
-        {({
-          handleSubmit,
-          handleBlur,
-          handleChange,
-          values
-        }) => (
+          console.log(values);
+        }}
+      >
+        {({ handleSubmit, handleBlur, handleChange, values }) => (
           <Form onSubmit={handleSubmit}>
-       <FormControl fullWidth className={clsx(classes.flexContainer)}>
-          <IconButton className={classes.flexContainerItem} color="primary" aria-label="upload picture">
-            <Avatar
-              variant="square"
-              className={classes.large}
-              alt={company.name}
-              src={`${API}/storage/companies/${company.logo}`}
-            />
-       </IconButton>
-       <TextField 
-         id="standard-required" 
-         label="Company Name" 
-         className={clsx(classes.margin, classes.flexContainerItem)}
-         variant="outlined"
-         name="name"
-         onBlur={handleBlur}
-         onChange={handleChange}
-         value={values.name} />
-       <TextField 
-         id="standard-required-url" 
-         className={clsx(classes.margin, classes.flexContainerItem)}
-              variant="outlined"
-              label="Company Order Website"
-              name="order_url"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.order_url} />
-            </FormControl>
-          <FormControl fullWidth className={classes.margin}>
-            <TextField
-              id="standard-multiline-static"
-              label="Description"
-              name="description"
-              variant="outlined"
-              multiline
-              rows={5}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.description}
-            />
+            <FormControl fullWidth className={clsx(classes.flexContainer)}>
+              {
+                company.logo &&
+                <IconButton
+                className={classes.flexContainerItem}
+                color="primary"
+                aria-label="upload picture"
+              >
+                <Avatar
+                  variant="square"
+                  className={classes.large}
+                  alt={company.name}
+                  src={`${API}/storage/companies/${company.logo}`}
+                />
+              </IconButton>
+              }
+              <TextField
+                label="Company Name"
+                className={clsx(classes.margin, classes.flexContainerItem)}
+                variant="outlined"
+                name="name"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.name}
+              />
+              <TextField
+                className={clsx(classes.margin, classes.flexContainerItem)}
+                variant="outlined"
+                label="Company Order Website"
+                name="order_url"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.order_url}
+              />
             </FormControl>
             <FormControl fullWidth className={classes.margin}>
-            <TextField
-                id="standard-multiline-static"
+              <TextField
+                label="Description"
+                name="description"
+                variant="outlined"
+                multiline
+                rows={5}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.description}
+              />
+            </FormControl>
+            <FormControl fullWidth className={classes.margin}>
+              <TextField
                 label="Quote"
                 name="quote"
                 multiline
@@ -145,12 +148,21 @@ const CompanyForm = (props) => {
                 onChange={handleChange}
                 value={values.quote}
               />
-              </FormControl>
-              </Form>
-              )}
-              </Formik>
+            </FormControl>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              className={classes.button}
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
-  }
- 
+};
+
 export default CompanyForm;

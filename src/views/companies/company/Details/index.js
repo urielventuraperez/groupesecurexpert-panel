@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
 import Fab from '@material-ui/core/Fab';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import RadioInsurances from './RadioInsurances';
+import RadioInsurances from './FormInsurances';
 
 const useStyles = makeStyles(theme => ({
   root: {

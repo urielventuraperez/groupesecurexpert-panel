@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
 import Container from '@material-ui/core/Container';
@@ -8,10 +8,10 @@ import { connect } from 'react-redux';
 import Insurances from './insurance';
 import Empty from 'src/components/Empty';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import Divider from '@material-ui/core/Divider';
 import CompanyForm from './form';
-import { NavLink as RouterLink } from 'react-router-dom';
+import InsurancesForm from './formInsurance';
+import { API, LSTOKEN } from 'src/utils/environmets';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,6 +23,9 @@ const useStyles = makeStyles(theme => ({
   container: {
     padding: theme.spacing(4),
     color: theme.palette.text.secondary
+  },
+  grid: {
+    padding: theme.spacing(3, 1)
   },
   input: {
     display: 'none'
@@ -37,13 +40,13 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       alignItems: 'center'
-    },
+    }
   },
   flexContainerItem: {
     flexGrow: 1,
     [theme.breakpoints.up('md')]: {
       marginLeft: theme.spacing(1)
-    },
+    }
   },
   margin: {
     marginTop: theme.spacing(2),
@@ -62,44 +65,62 @@ const Company = props => {
   const { match, getCompany, company, isLoad } = props;
 
   const id = match.params.slug;
+  const [insurances, setInsurances] = useState([]);
+  const [loadInsurances, setLoadInsurances] = useState(false);
 
   useEffect(() => {
     getCompany(id);
+    getInsurances(id);
   }, [getCompany]);
+
+  async function getInsurances(idCompany) {
+    let response = await fetch(`${API}/api/company/${idCompany}/insurances`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    });
+    if (response.status) {
+      let getInsurances = await response.json();
+      setLoadInsurances(true);
+      setInsurances(getInsurances.data);
+    }
+  }
 
   return (
     <div>
       {!isLoad ? (
         <Page className={classes.root} title={`${company.name}`}>
           <Container className={classes.container}>
-            <Grid>
+            <Grid className={classes.grid}>
               <CompanyForm company={company} />
             </Grid>
-            {Array.isArray(company.insurances) && company.insurances.length ? (
-              <Box mt={5}>
-                <Grid container spacing={2}>
-                  {company.insurances.map(insurance => (
-                    <Grid key={insurance.id} item>
-                      <Insurances name={insurance.name} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            ) : (
-              <Empty title={'Insurances'} />
-            )}
+
+            <Divider variant="middle" />
+
+            <Grid className={classes.grid}>
+              <InsurancesForm 
+                idCompany={company.id} 
+                insurances={insurances} 
+                loadInsurances={loadInsurances} />
+              {Array.isArray(company.insurances) &&
+              company.insurances.length ? (
+                <Box mt={5}>
+                  <Grid container spacing={2}>
+                    {company.insurances.map(insurance => (
+                      <Grid key={insurance.id} item>
+                        <Insurances 
+                          name={insurance.name} 
+                          idCompany={company.id} 
+                          idInsurance={insurance.id} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              ) : (
+                <Empty title={'Insurances'} />
+              )}
+            </Grid>
           </Container>
-          <Fab
-            variant="extended"
-            color="primary"
-            aria-label="add"
-            className={classes.extendedIcon}
-            component={RouterLink}
-            to={`/app/company/${id}/insurance`}
-          >
-            <AddIcon className={classes.margin} />
-            Add Insurance
-          </Fab>
         </Page>
       ) : (
         <CircularProgress
