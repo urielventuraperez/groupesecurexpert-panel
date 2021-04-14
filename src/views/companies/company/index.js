@@ -109,7 +109,8 @@ const Company = props => {
                     {company.insurances.map(insurance => (
                       <Grid key={insurance.id} item>
                         <Insurances 
-                          name={insurance.name} 
+                          name={insurance.name}
+                          createdAt={insurance.created_at} 
                           idCompany={company.id} 
                           idInsurance={insurance.id} />
                       </Grid>

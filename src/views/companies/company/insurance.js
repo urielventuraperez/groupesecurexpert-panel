@@ -11,6 +11,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme=>({
   root: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles(theme=>({
   },
 }));
 
-const Insurances = ({ name }) => {
+const Insurances = ({ name, createdAt }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -51,11 +52,20 @@ const Insurances = ({ name }) => {
     setExpanded(!expanded);
   };
 
+  const addedMoment = dateObj => {
+    const momentObj = moment(dateObj);
+    const momentString = momentObj.format('LLL');
+    return momentString;
+  };
+
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography variant="h5" component="h2">
           {name}
+        </Typography>
+        <Typography variant="body" component="p">
+          Created at: {addedMoment(createdAt)}
         </Typography>
       </CardContent>
       <CardActions>

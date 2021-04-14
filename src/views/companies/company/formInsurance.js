@@ -11,10 +11,11 @@ import { NavLink as RouterLink } from 'react-router-dom';
 
 const InsurancesForm = ({ idCompany, loadInsurances, insurances }) => {
   const [value, setValue] = React.useState('');
+  const [activeBtn, setActiveBtn] = React.useState(false);
 
   const handleChange = event => {
-    console.log(event.target);
     setValue(event.target.value);
+    setActiveBtn(true);
   };
 
   return (
@@ -42,6 +43,7 @@ const InsurancesForm = ({ idCompany, loadInsurances, insurances }) => {
         )}
       </FormControl>
       <Button
+        disabled = {!activeBtn}
         color="primary"
         aria-label="add"
         component={RouterLink}
