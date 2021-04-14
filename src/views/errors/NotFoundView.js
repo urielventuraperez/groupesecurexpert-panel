@@ -1,13 +1,10 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
+import { Box, Container, Typography, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
+import Button from '@material-ui/core/Button';
+import { NavLink as RouterLink } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -26,10 +23,7 @@ const NotFoundView = () => {
   const classes = useStyles();
 
   return (
-    <Page
-      className={classes.root}
-      title="404"
-    >
+    <Page className={classes.root} title="404">
       <Box
         display="flex"
         flexDirection="column"
@@ -37,18 +31,10 @@ const NotFoundView = () => {
         justifyContent="center"
       >
         <Container maxWidth="md">
-          <Typography
-            align="center"
-            color="textPrimary"
-            variant="h1"
-          >
+          <Typography align="center" color="textPrimary" variant="h1">
             404: The page you are looking for isn’t here
           </Typography>
-          <Typography
-            align="center"
-            color="textPrimary"
-            variant="subtitle2"
-          >
+          <Typography align="center" color="textPrimary" variant="subtitle2">
             You either tried some shady route or you came here by mistake.
             Whichever it is, try using the navigation
           </Typography>
@@ -58,6 +44,16 @@ const NotFoundView = () => {
               className={classes.image}
               src="/static/images/404_not_found.png"
             />
+          </Box>
+          <Box textAlign="center">
+            <Button
+              color="primary"
+              aria-label="add"
+              component={RouterLink}
+              to={`/`}
+            >
+              Go back home
+            </Button>
           </Box>
         </Container>
       </Box>
