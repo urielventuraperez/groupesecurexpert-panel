@@ -142,7 +142,7 @@ const CompanyCard = ({ className, company }) => {
             <Grid className={classes.statsItem} item>
               {
                 company.insurances.map( insurance => (
-                  <Chip key={insurance.id} className={classes.chip} icon={<DoneIcon />} variant="outlined" color="primary" label={insurance.insurance_name} component="a" href="#chip" clickable />
+                  <Chip key={insurance.id} className={classes.chip} icon={<DoneIcon />} variant="outlined" color="primary" label={insurance.name} component="a" href="#chip" clickable />
                   ))
               }  
             </Grid>

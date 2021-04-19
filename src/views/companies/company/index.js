@@ -110,7 +110,7 @@ const Company = props => {
                       <Grid key={insurance.id} item>
                         <Insurances 
                           name={insurance.name}
-                          createdAt={insurance.created_at} 
+                          createdAt={insurance.pivot.created_at} 
                           idCompany={company.id} 
                           idInsurance={insurance.id} />
                       </Grid>
