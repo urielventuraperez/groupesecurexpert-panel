@@ -7,7 +7,6 @@ import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import CompaniesListView from 'src/views/companies/CompaniesListView';
 import CompanyView from 'src/views/companies/Company';
-import InsuranceView from 'src/views/companies/Company/Details';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import FaqView from 'src/views/faq/FaqView';
@@ -22,7 +21,6 @@ const RenderRoutes = (
     <ProtectedRoutes exact path='/app/customers' component={CustomerListView} />
     <ProtectedRoutes exact path='/app/companies' component={CompaniesListView} />
     <ProtectedRoutes exact path='/app/company/:slug' component={CompanyView} />
-    <ProtectedRoutes exact path='/app/company/:idCompany/insurance/:idInsurance/:idDetail' component={InsuranceView} />
     <ProtectedRoutes exact path='/app/settings' component={SettingsView} />
     <ProtectedRoutes exact path='/app/register' component={RegisterView} />
     <ProtectedRoutes exact path='/app/faq' component={FaqView} />
