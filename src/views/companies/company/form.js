@@ -76,7 +76,31 @@ const useStyles = makeStyles(theme => ({
 
 const CompanyForm = props => {
   const classes = useStyles();
+
+  
   const { company, updateCompany, isShow, alertStatus } = props;
+
+  const [preview, setPreview] = React.useState();
+  const [selectedFile, setSelectedFile] = React.useState('')
+
+  React.useEffect(() => {
+    if (!selectedFile) {
+        setPreview(undefined)
+        return
+    }
+    const objectUrl = URL.createObjectURL(selectedFile)
+    setPreview(objectUrl)
+
+    return () => URL.revokeObjectURL(objectUrl)
+}, [selectedFile])
+
+  const onSelectedFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined)
+      return
+  }
+  setSelectedFile(e.target.files[0])
+  }
 
   return (
     <div key={1}>
@@ -92,24 +116,41 @@ const CompanyForm = props => {
           updateCompany(company.id, values);
         }}
       >
-        {({ handleSubmit, handleBlur, handleChange, values }) => (
+        {({ handleSubmit, handleBlur, handleChange, setFieldValue, values }) => (
           <Form onSubmit={handleSubmit}>
             <FormControl fullWidth className={clsx(classes.flexContainer)}>
-              {
-                company.logo &&
+              {company.logo && (
                 <IconButton
-                className={classes.flexContainerItem}
-                color="primary"
-                aria-label="upload picture"
-              >
-                <Avatar
-                  variant="square"
-                  className={classes.large}
-                  alt={company.name}
-                  src={`${API}/storage/companies/${company.logo}`}
-                />
-              </IconButton>
-              }
+                  className={classes.flexContainerItem}
+                  aria-label="upload picture"
+                  variant="contained"
+                  color="primary"
+                  component="label"
+                >
+                  <Avatar
+                    variant="square"
+                    className={classes.large}
+                    alt={company.name}
+                    src={selectedFile ?  
+                      preview : 
+                      `${API}/storage/companies/${company.logo}`}
+                  />
+                  <input
+                    name="logo"
+                    accept="image/x-png,image/gif,image/jpeg"
+                    className={classes.input}
+                    id="contained-button-file"
+                    type="file"
+                    onChange={ (e) => 
+                      {
+                        setFieldValue("logo", e.currentTarget.files[0]);
+                        onSelectedFile(e) 
+                      } 
+                    }
+                  />
+                </IconButton>
+              )}
+
               <TextField
                 label="Company Name"
                 className={clsx(classes.margin, classes.flexContainerItem)}
@@ -166,7 +207,11 @@ const CompanyForm = props => {
           </Form>
         )}
       </Formik>
-      <CustomSnackbar open={isShow} status={alertStatus} text={ alertStatus ? 'Successfully updated!' : 'Oops, retry again...'} />
+      <CustomSnackbar
+        open={isShow}
+        status={alertStatus}
+        text={alertStatus ? 'Successfully updated!' : 'Oops, retry again...'}
+      />
     </div>
   );
 };
@@ -175,15 +220,15 @@ const mapStateToProps = state => {
   return {
     isShow: state.alert.isShow,
     alertStatus: state.alert.status
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     updateCompany: (idCompany, values) => {
       dispatch(updateCompany(idCompany, values));
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyForm);

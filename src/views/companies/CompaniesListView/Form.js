@@ -52,7 +52,6 @@ const CompanyDialog = props => {
   const [preview, setPreview] = React.useState()
   const [selectedFile, setSelectedFile] = React.useState()
 
-  // create a preview as a side effect, whenever selected file is changed
   React.useEffect(() => {
       if (!selectedFile) {
           setPreview(undefined)
@@ -69,7 +68,6 @@ const CompanyDialog = props => {
           setSelectedFile(undefined)
           return
       }
-
       setSelectedFile(e.target.files[0])
   }
 
