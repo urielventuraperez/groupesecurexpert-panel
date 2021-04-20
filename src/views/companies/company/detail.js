@@ -1,41 +1,37 @@
 import React from 'react';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Switch from '@material-ui/core/Switch';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowRightRoundedIcon from '@material-ui/icons/ArrowRightRounded';
+import StarIcon from '@material-ui/icons/Star';
 
-const ListDetails = () => {
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: true,
-  });
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+const ListDetails = ({details}) => {
 
   return (
-    <FormControl component="fieldset">
-      <FormLabel component="legend">Assign detail</FormLabel>
-      <FormGroup>
-        <FormControlLabel
-          control={<Switch checked={state.gilad} onChange={handleChange} name="gilad" />}
-          label="Gilad Gray"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.jason} onChange={handleChange} name="jason" />}
-          label="Jason Killian"
-        />
-        <FormControlLabel
-          control={<Switch checked={state.antoine} onChange={handleChange} name="antoine" />}
-          label="Antoine Llorca"
-        />
-      </FormGroup>
-      <FormHelperText>Be careful</FormHelperText>
-    </FormControl>
+    <List>
+      {details.map((detail) => {
+        return (
+          <ListItem 
+            key={detail.id}
+            role={undefined}
+            dense 
+            button>
+            <ListItemIcon>
+              <StarIcon color={detail.active ? 'secondary' : 'disabled'} />
+            </ListItemIcon>  
+            <ListItemText id={detail.id} primary={detail.name} />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="details">
+                <ArrowRightRoundedIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        );
+      })}
+    </List>
   );
 }
 

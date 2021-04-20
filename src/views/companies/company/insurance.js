@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme=>({
   },
 }));
 
-const Insurances = ({ name, createdAt }) => {
+const Insurances = ({ name, createdAt, details }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -96,7 +96,7 @@ const Insurances = ({ name, createdAt }) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-            <ListDetails />
+            <ListDetails details={details} />
         </CardContent>
       </Collapse>
     </Card>

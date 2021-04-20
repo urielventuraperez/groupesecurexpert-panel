@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from 'src/components/Page';
-import Fab from '@material-ui/core/Fab';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RadioInsurances from './FormInsurances';
 
 const useStyles = makeStyles(theme => ({
@@ -27,9 +25,7 @@ const InsuraceView = (props) => {
   return (
     <Page className={classes.root} title={`Insurance`}>
       <RadioInsurances idCompany={companyId} />
-      <Fab onClick={props.history.goBack} color="secondary" aria-label="add" className={classes.fab}>
-        <ArrowBackIcon />
-      </Fab>
+      <BackButton history={props.history} />
     </Page>
   );
 }

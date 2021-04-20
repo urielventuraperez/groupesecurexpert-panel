@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import CompanyForm from './form';
 import InsurancesForm from './formInsurance';
 import { API, LSTOKEN } from 'src/utils/environmets';
+import BackButton from 'src/components/BackButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -111,6 +112,7 @@ const Company = props => {
                         <Insurances 
                           name={insurance.name}
                           createdAt={insurance.pivot.created_at} 
+                          details={insurance.details}
                           idCompany={company.id} 
                           idInsurance={insurance.id} />
                       </Grid>
@@ -134,6 +136,7 @@ const Company = props => {
           color="secondary"
         />
       )}
+      <BackButton history={props.history} />
     </div>
   );
 };
