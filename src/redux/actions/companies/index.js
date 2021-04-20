@@ -1,4 +1,11 @@
-import { VIEW_COMPANIES, VIEW_COMPANY, IS_LOAD_COMPANIES, FILTER_COMPANY, ADD_COMPANY, DELETE_COMPANY } from '../../actionTypes/companies';
+import { 
+  VIEW_COMPANIES, 
+  VIEW_COMPANY, 
+  IS_LOAD_COMPANIES, 
+  FILTER_COMPANY, 
+  ADD_COMPANY, 
+  DELETE_COMPANY,
+  UPDATE_COMPANY } from '../../actionTypes/companies';
 import { API, LSTOKEN } from 'src/utils/environmets';
 import { SHOW_ALERT, ALERT_STATUS } from 'src/redux/actionTypes/alert';
 
@@ -69,6 +76,35 @@ export function deleteCompany(idCompany) {
         return setTimeout(()=>{dispatch({type: SHOW_ALERT })}, 4000);
       }).catch(e => { console.log(e) })
     }
+}
+
+export function updateCompany(id, data) {
+  const formData = new FormData();
+  Object.keys( data ).forEach( key => formData.append(key, data[key]) );
+  return function(dispatch){
+      return fetch(`${API}/api/company/update/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+        },
+        method: 'POST',
+        body: formData
+      }).then(response => response.json())
+      .then(
+        json => {
+          if (json.status) {
+            dispatch({ type: DELETE_COMPANY, payload: id })
+            dispatch({ type: UPDATE_COMPANY, payload: json.data })
+            dispatch({type: SHOW_ALERT })
+            dispatch({type: ALERT_STATUS, payload:true})
+          } else {
+            dispatch({type: SHOW_ALERT })
+            dispatch({type: ALERT_STATUS, payload:false})
+          }
+          return setTimeout(()=>{dispatch({type: SHOW_ALERT })}, 4000);
+        }
+      ).catch( e => console.log(e) );
+  }
 }
 
 export function filterCompanies(input) {

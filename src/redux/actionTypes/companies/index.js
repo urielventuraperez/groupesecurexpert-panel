@@ -4,3 +4,4 @@ export const VIEW_COMPANY = 'VIEW_COMPANY';
 export const FILTER_COMPANY = 'FILTER_COMPANY';
 export const ADD_COMPANY = 'ADD_COMPANY';
 export const DELETE_COMPANY = 'DELETE_COMPAMY';
+export const UPDATE_COMPANY = 'UPDATE_COMPANY';

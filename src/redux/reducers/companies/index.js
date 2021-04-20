@@ -1,4 +1,11 @@
-import { VIEW_COMPANIES, IS_LOAD_COMPANIES, VIEW_COMPANY, FILTER_COMPANY, ADD_COMPANY, DELETE_COMPANY } from "../../actionTypes/companies";
+import { 
+  VIEW_COMPANIES, 
+  IS_LOAD_COMPANIES, 
+  VIEW_COMPANY, 
+  FILTER_COMPANY, 
+  ADD_COMPANY, 
+  DELETE_COMPANY,
+  UPDATE_COMPANY } from "../../actionTypes/companies";
 
 const initialState = {
   isLoadCompanies: false,
@@ -30,6 +37,10 @@ function reducer(state = initialState, action) {
         {...state, isLoadCompanies: false},
         { companiesResult: state.companies.filter(h => h.name.toLowerCase().includes(action.payload.toLowerCase())) }
       )
+    case UPDATE_COMPANY:
+        return Object.assign(
+          { ...state, companies: [...state.companies, action.payload] }
+        )
     default:
       return state;
   }

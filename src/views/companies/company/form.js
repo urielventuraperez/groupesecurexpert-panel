@@ -4,12 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import FormControl from '@material-ui/core/FormControl';
-import { API } from 'src/utils/environmets';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { API } from 'src/utils/environmets';
+import { updateCompany } from 'src/redux/actions/companies';
+import { connect } from 'react-redux';
+import CustomSnackbar from 'src/components/Alert';
 
 const CompanySchema = Yup.object().shape({
   name: Yup.string()
@@ -73,7 +76,8 @@ const useStyles = makeStyles(theme => ({
 
 const CompanyForm = props => {
   const classes = useStyles();
-  const { company } = props;
+  const { company, updateCompany, isShow, alertStatus } = props;
+
   return (
     <div key={1}>
       <Formik
@@ -85,7 +89,7 @@ const CompanyForm = props => {
         }}
         validationSchema={CompanySchema}
         onSubmit={values => {
-          console.log(values);
+          updateCompany(company.id, values);
         }}
       >
         {({ handleSubmit, handleBlur, handleChange, values }) => (
@@ -153,6 +157,7 @@ const CompanyForm = props => {
               variant="contained"
               color="primary"
               size="large"
+              type="submit"
               className={classes.button}
               startIcon={<SaveIcon />}
             >
@@ -161,8 +166,24 @@ const CompanyForm = props => {
           </Form>
         )}
       </Formik>
+      <CustomSnackbar open={isShow} status={alertStatus} text={ alertStatus ? 'Successfully updated!' : 'Oops, retry again...'} />
     </div>
   );
 };
 
-export default CompanyForm;
+const mapStateToProps = state => {
+  return {
+    isShow: state.alert.isShow,
+    alertStatus: state.alert.status
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCompany: (idCompany, values) => {
+      dispatch(updateCompany(idCompany, values));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyForm);
