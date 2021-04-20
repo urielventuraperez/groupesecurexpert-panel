@@ -111,9 +111,11 @@ const Company = props => {
                       <Grid key={insurance.id} item>
                         <Insurances 
                           name={insurance.name}
-                          createdAt={insurance.pivot.created_at} 
+                          createdAt={insurance.pivot.created_at}
+                          active={insurance.pivot.active}
                           details={insurance.details}
-                          idCompany={company.id} 
+                          idCompany={company.id}
+                          company={company.name} 
                           idInsurance={insurance.id} />
                       </Grid>
                     ))}

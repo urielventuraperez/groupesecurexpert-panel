@@ -11,7 +11,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
-import ListDetails from './detail';
+import ListDetails from './details';
 import moment from 'moment';
 
 const useStyles = makeStyles(theme=>({
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme=>({
   },
 }));
 
-const Insurances = ({ name, createdAt, details }) => {
+const Insurances = ({ name, createdAt, details, active, company }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -86,17 +86,14 @@ const Insurances = ({ name, createdAt, details }) => {
         <IconButton
           className={classes.active}
         >
-          <VisibilityIcon />
-        </IconButton>
-        <IconButton
-          className={classes.active}
-        >
-          <VisibilityOffIcon />
+          {
+            active ? <VisibilityIcon color="action" /> : <VisibilityOffIcon color="disabled" />
+          }
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-            <ListDetails details={details} />
+            <ListDetails details={details} insurance={name} company={company} />
         </CardContent>
       </Collapse>
     </Card>
