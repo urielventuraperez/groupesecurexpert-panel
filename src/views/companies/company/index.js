@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 const Company = props => {
   const classes = useStyles();
 
-  const { match, getCompany, company, isLoad } = props;
+  const { match, getCompany, company, isLoad, isLoadInsurances } = props;
 
   const id = match.params.slug;
   const [insurances, setInsurances] = useState([]);
@@ -116,7 +116,8 @@ const Company = props => {
                           details={insurance.details}
                           idCompany={company.id}
                           company={company.name} 
-                          idInsurance={insurance.id} />
+                          idInsurance={insurance.id}
+                          isLoadInsurances={isLoadInsurances} />
                       </Grid>
                     ))}
                   </Grid>
@@ -146,7 +147,8 @@ const Company = props => {
 const mapStateToProps = state => {
   return {
     isLoad: state.companies.isLoadCompanies,
-    company: state.companies.company
+    company: state.companies.company,
+    isLoadInsurances: state.companies.isLoadInsurances,
   };
 };
 

@@ -7,9 +7,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import { NavLink as RouterLink } from 'react-router-dom';
+import { addInsurance } from 'src/redux/actions/companies';
+import { connect } from 'react-redux';
 
-const InsurancesForm = ({ idCompany, loadInsurances, insurances }) => {
+const InsurancesForm = ({ idCompany, loadInsurances, insurances, addInsurance }) => {
   const [value, setValue] = React.useState('');
   const [activeBtn, setActiveBtn] = React.useState(false);
 
@@ -46,8 +47,7 @@ const InsurancesForm = ({ idCompany, loadInsurances, insurances }) => {
         disabled = {!activeBtn}
         color="primary"
         aria-label="add"
-        component={RouterLink}
-        to={`/app/company/${idCompany}/insurance`}
+        onClick={ () => { addInsurance(idCompany, value) } }
       >
         <AddIcon />
         Add Insurance
@@ -56,4 +56,12 @@ const InsurancesForm = ({ idCompany, loadInsurances, insurances }) => {
   );
 };
 
-export default InsurancesForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addInsurance: (idCompany, idInsurance) => {
+      dispatch(addInsurance(idCompany, idInsurance))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(InsurancesForm);

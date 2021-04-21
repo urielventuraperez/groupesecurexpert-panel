@@ -5,7 +5,10 @@ import {
   FILTER_COMPANY, 
   ADD_COMPANY, 
   DELETE_COMPANY,
-  UPDATE_COMPANY } from '../../actionTypes/companies';
+  UPDATE_COMPANY,
+  ADD_INSURANCE,
+  IS_LOAD_INSURANCES
+} from '../../actionTypes/companies';
 import { API, LSTOKEN } from 'src/utils/environmets';
 import { SHOW_ALERT, ALERT_STATUS } from 'src/redux/actionTypes/alert';
 
@@ -133,4 +136,26 @@ export function getCompany(id) {
       console.log(e.error);
     })
   }
+}
+
+export function addInsurance(idCompany, idInsurance) {
+  return function(dispatch){
+    dispatch({type: IS_LOAD_INSURANCES});
+    return fetch(`${API}/api/company/${idCompany}/insurance/${idInsurance}`,{
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    })
+      .then( response => response.json() )
+      .then( json => {
+        if (json.status) {
+          dispatch({
+            type: ADD_INSURANCE,
+            payload: json.data
+          })
+        }
+      }).catch( e => console.log(e));
+  }
+
 }

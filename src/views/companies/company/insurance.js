@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme=>({
   },
 }));
 
-const Insurances = ({ name, createdAt, details, active, company }) => {
+const Insurances = ({ name, createdAt, details, active, company, isLoadInsurances }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -60,7 +60,10 @@ const Insurances = ({ name, createdAt, details, active, company }) => {
   };
 
   return (
-    <Card className={classes.root} variant="outlined">
+    <div>
+    {
+      !isLoadInsurances &&
+      <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography variant="h5" component="h2">
           {name}
@@ -97,6 +100,8 @@ const Insurances = ({ name, createdAt, details, active, company }) => {
         </CardContent>
       </Collapse>
     </Card>
+    }
+    </div>
   );
 };
 
