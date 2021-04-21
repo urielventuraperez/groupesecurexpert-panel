@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Grid,
@@ -13,7 +13,8 @@ import Country from './Countries';
 import TotalCustomers from './TotalCustomers';
 import TotalAdmin from './TotalAdmins';
 import TrafficByDevice from './TrafficByDevice';
-
+import { API, LSTOKEN } from 'src/utils/environmets';
+ 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -25,6 +26,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
+
+  const [users, setUser] = useState(0);
+  const [companies, setCompanies] = useState(0);
+
+  async function dashboardElements() {
+    let response = await fetch(`${API}/api/dashboard`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    });
+
+    if(response.status) {
+      let getDashboard = await response.json();
+      setUser(getDashboard.data.users);
+      setCompanies(getDashboard.data.companies);
+    }
+
+  }
+
+  useEffect(()=>{
+    dashboardElements();
+  },[]);
 
   return (
     <Page
@@ -43,7 +66,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TotalAdmin />
+            <TotalAdmin users={users} />
           </Grid>
           <Grid
             item
@@ -52,7 +75,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <Company />
+            <Company companies={companies} />
           </Grid>
           <Grid
             item

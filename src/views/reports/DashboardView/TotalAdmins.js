@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TotalAdmin = ({ className, ...rest }) => {
+const TotalAdmin = ({ className, users, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -49,7 +49,7 @@ const TotalAdmin = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              $23,200
+              {users}
             </Typography>
           </Grid>
           <Grid item>

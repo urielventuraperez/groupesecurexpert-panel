@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Company = ({ className, ...rest }) => {
+const Company = ({ className, companies, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -56,7 +56,7 @@ const Company = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              $24,000
+              {companies}
             </Typography>
           </Grid>
           <Grid item>
