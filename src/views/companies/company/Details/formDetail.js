@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
@@ -6,6 +6,9 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import CustomSnackbar from 'src/components/Alert';
+import { API, LSTOKEN } from 'src/utils/environmets';
 
 const DetailSchema = Yup.object().shape({
   content: Yup.string()
@@ -35,25 +38,83 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FormDetail = () => {
+const FormDetail = ({ detailId }) => {
   const classes = useStyles();
+
+  const [isLoad, setIsLoad] = useState(false);
+  const [detailData, setDetailData] = useState({});
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  // Show Alert
+  const [ alert, setAlert ] = useState({
+    status: 'error',
+    open: false,
+    text: ''
+  })
+
+  async function updateDetail(detailId, values) {
+    let formData = new FormData();
+    Object.keys(values).forEach(key => formData.append(key, values[key]) )
+    setIsDisabled(false);
+    fetch(`${API}/api/company/insurance/detail/${detailId}`, 
+    {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    }).then(response => response.json())
+    .then(
+      json => {
+        setAlert({
+          status: json.status,
+          open: true,
+          text: json.message
+        })
+        setIsDisabled(false);
+      }
+    )
+  }
+
+  useEffect(() => {
+    if( detailId ) {
+      setIsLoad(false);
+      fetch(`${API}/api/company/insurance/detail/${detailId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+        }
+      }).then(response => response.json())
+          .then( json => {
+              if (json.status) {
+                setDetailData(json.data);
+                setIsLoad(true);
+              }
+          }).catch(
+            (e) => {
+              console.log(e);
+            }
+          );
+    }
+  }, [detailId])
+
   return (
+    isLoad ? 
     <div key={1} className={classes.container}>
       <Formik
         initialValues={{
-          content: '',
-          note: ''
+          content: detailData.content ? detailData.content : '',
+          note: detailData.note ? detailData.note : ''
         }}
         validationSchema={DetailSchema}
         onSubmit={values => {
-          console.log(values);
+          updateDetail(detailId, values);
         }}
       >
         {({ handleSubmit, handleBlur, handleChange, values }) => (
           <Form onSubmit={handleSubmit}>
             <FormControl fullWidth className={classes.margin}>
               <TextField
-                label="Content"
+                label="Add the new Content..."
                 name="content"
                 variant="outlined"
                 multiline
@@ -65,7 +126,7 @@ const FormDetail = () => {
             </FormControl>
             <FormControl fullWidth className={classes.margin}>
               <TextField
-                label="Note"
+                label="Add the new Note..."
                 name="note"
                 multiline
                 variant="outlined"
@@ -79,6 +140,8 @@ const FormDetail = () => {
               variant="contained"
               color="primary"
               size="large"
+              type="submit"
+              disabled = { isDisabled ? true : false }
               className={classes.button}
               startIcon={<SaveIcon />}
             >
@@ -87,7 +150,10 @@ const FormDetail = () => {
           </Form>
         )}
       </Formik>
+      <CustomSnackbar open={alert.open} status={alert.status} text = {alert.text} />
     </div>
+    :
+    <LinearProgress color="secondary" />
   );
 };
 

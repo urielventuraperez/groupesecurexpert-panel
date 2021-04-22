@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowRightRoundedIcon from '@material-ui/icons/ArrowRightRounded';
 import StarIcon from '@material-ui/icons/Star';
-import FullScreenDialogFormDetail from './Details/'
+import FullScreenDialogFormDetail from './Details/';
 
 const ListDetails = ({details, insurance, company}) => {
 
@@ -15,12 +15,14 @@ const ListDetails = ({details, insurance, company}) => {
   const [detailName, setDetailName] = useState('');
   const [insuranceName, setInsuranceName] = useState('');
   const [companyName, setCompanyName] = useState('');
+  const [detailId, setDetailId] = useState('');
 
-  const handleClickOpen = (detailName,insuranceName, companyName) => {
+  const handleClickOpen = (detail, detailName,insuranceName, companyName) => {
     setOpen(true);
     setDetailName(detailName);
     setInsuranceName(insuranceName);
     setCompanyName(companyName);
+    setDetailId(detail);
   };
 
   const handleClose = () => {
@@ -28,6 +30,7 @@ const ListDetails = ({details, insurance, company}) => {
     setDetailName('');
     setInsuranceName('');
     setCompanyName('');
+    setDetailId('');
   }
 
   return (
@@ -45,7 +48,7 @@ const ListDetails = ({details, insurance, company}) => {
             </ListItemIcon>  
             <ListItemText id={detail.id} primary={detail.name} />
             <ListItemSecondaryAction>
-              <IconButton onClick={() => handleClickOpen(detail.name, insurance, company)} edge="end" aria-label="details">
+              <IconButton onClick={() => handleClickOpen(detail.id, detail.name, insurance, company)} edge="end" aria-label="details">
                 <ArrowRightRoundedIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -59,6 +62,7 @@ const ListDetails = ({details, insurance, company}) => {
         detail={detailName}
         insurance={insuranceName}
         company={companyName}
+        detailId={detailId}
         />
     </div>
   );

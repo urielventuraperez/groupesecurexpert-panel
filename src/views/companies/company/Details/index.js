@@ -26,9 +26,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const FullScreenDialogFormDetail = ({ open, close, detail, insurance, company }) => {
+const FullScreenDialogFormDetail = ({ detailId, open, close, detail, insurance, company }) => {
   const classes = useStyles();
-
   return (
     <div>
       <Dialog
@@ -61,7 +60,7 @@ const FullScreenDialogFormDetail = ({ open, close, detail, insurance, company })
             </Button>
           </Toolbar>
         </AppBar>
-        <FormDetail />
+        <FormDetail detailId={detailId} />
       </Dialog>
     </div>
   );
