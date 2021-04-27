@@ -1,5 +1,6 @@
 import React , { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -9,6 +10,7 @@ import * as Yup from 'yup';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CustomSnackbar from 'src/components/Alert';
 import { API, LSTOKEN } from 'src/utils/environmets';
+import FormUploadFiles from './formUploadFiles';
 
 const DetailSchema = Yup.object().shape({
   content: Yup.string()
@@ -21,9 +23,6 @@ const DetailSchema = Yup.object().shape({
 });
 
 const useStyles = makeStyles(theme => ({
-  container: {
-      margin: theme.spacing(2)
-  },
   button: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(2)
@@ -99,7 +98,7 @@ const FormDetail = ({ detailId }) => {
 
   return (
     isLoad ? 
-    <div key={1} className={classes.container}>
+    <Container maxWidth={false} key={1}>
       <Formik
         initialValues={{
           content: detailData.content ? detailData.content : '',
@@ -150,8 +149,12 @@ const FormDetail = ({ detailId }) => {
           </Form>
         )}
       </Formik>
+      {
+        detailData.title_detail_id === 7 &&
+        <FormUploadFiles files = {detailData.files} />
+      }
       <CustomSnackbar open={alert.open} status={alert.status} text = {alert.text} />
-    </div>
+    </Container>
     :
     <LinearProgress color="secondary" />
   );
