@@ -100,7 +100,9 @@ const CompanyForm = props => {
       return
   }
   setSelectedFile(e.target.files[0])
+
   }
+
 
   return (
     <div key={1}>
