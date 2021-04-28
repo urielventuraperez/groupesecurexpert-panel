@@ -151,7 +151,7 @@ const FormDetail = ({ detailId }) => {
       </Formik>
       {
         detailData.title_detail_id === 7 &&
-        <FormUploadFiles files = {detailData.files} />
+        <FormUploadFiles files = {detailData.files} idDetail={detailId} />
       }
       <CustomSnackbar open={alert.open} status={alert.status} text = {alert.text} />
     </Container>

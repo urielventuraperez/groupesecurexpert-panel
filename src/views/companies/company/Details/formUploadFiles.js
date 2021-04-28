@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -13,11 +14,12 @@ import Divider from '@material-ui/core/Divider';
 import ImageIcon from '@material-ui/icons/Image';
 import Typography from '@material-ui/core/Typography';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { API, LSTOKEN } from 'src/utils/environmets';
-import { Formik, Form } from 'formik';
+import IconButton from '@material-ui/core/IconButton';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 const FileSchema = Yup.object().shape({
@@ -26,7 +28,8 @@ const FileSchema = Yup.object().shape({
     .max(150, 'Too Long!'),
   description: Yup.string()
     .min(2, 'Too Short!')
-    .max(10000, 'Too Long!')
+    .max(10000, 'Too Long!'),
+  file: Yup.mixed().required('A file is required')
 });
 
 const useStyles = makeStyles(theme => ({
@@ -37,31 +40,28 @@ const useStyles = makeStyles(theme => ({
     display: 'none'
   },
   inputForm: {
-      marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2)
   },
   section: {
     margin: theme.spacing(3, 0)
   }
 }));
 
-const FolderList = ({ files }) => {
+const FolderList = ({ files, idDetail }) => {
   const classes = useStyles();
 
-  async function uploadFile(id) {
+  async function uploadFile(id, data) {
+    let formData = new FormData();
+    Object.keys(data).forEach( key => formData.append(key, data[key]));
+
     fetch(`${API}/api/company/insurance/detail/${id}/file`, {
       method: 'POST',
+      body: formData,
       headers: {
         Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
       }
     });
   }
-
-  const onSelectedFile = e => {
-    if (!e.target.files || e.target.files.length === 0) {
-      return;
-    }
-    uploadFile(e);
-  };
 
   return (
     <Container maxWidth={false} className={classes.root}>
@@ -78,6 +78,7 @@ const FolderList = ({ files }) => {
           validationSchema={FileSchema}
           onSubmit={values => {
             console.log(values);
+            uploadFile(idDetail, values);
           }}
         >
           {({
@@ -85,46 +86,62 @@ const FolderList = ({ files }) => {
             handleBlur,
             handleChange,
             setFieldValue,
+            errors,
+            touched,
             values
           }) => (
             <Form onSubmit={handleSubmit}>
-              <TextField                 
+              <TextField
                 onBlur={handleBlur}
                 onChange={handleChange}
                 className={classes.inputForm}
-                value={values.title} 
-                id="title" 
-                label="File title" />
-              <TextField                 
+                value={values.title}
+                id="title"
+                label="File title"
+              />
+              <TextField
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.description}
-                id="description" 
+                id="description"
                 className={classes.inputForm}
-                label="File description" />
+                label="File description"
+              />
               <label htmlFor="contained-button-file">
-                <Button variant="outlined" color="secondary" component="label">
-                  Upload new file
+                <IconButton
+                  variant="outlined"
+                  color="secondary"
+                  component="label"
+                >
+                  <AttachFileIcon />
                   <input
                     accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
                     className={classes.input}
                     id="contained-button-file"
                     multiple
                     type="file"
+                    name="file"
                     onChange={e => {
-                        setFieldValue("file", e.target.files[0]);
-                        onSelectedFile(e);
+                      setFieldValue('file', e.target.files[0]);
                     }}
                   />
-                </Button>
+                </IconButton>
               </label>
+              <Button type="submit" variant="outlined" color="secondary">
+                Upload file
+              </Button>
+              {errors.file && touched.file ? (
+                    <div>{errors.file}</div>
+                  ) : null}
+                  <ErrorMessage name="file" />
             </Form>
           )}
         </Formik>
+    
       </Box>
       <List className={classes.section}>
         {files.length === 0 ? (
-          <Typography variante="h5">Upload the first File</Typography>
+          <Alert severity="warning">Without files...</Alert>
         ) : (
           files.map(file => (
             <ListItem key={file.id}>
