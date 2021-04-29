@@ -48,19 +48,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FolderList = ({ files, idDetail }) => {
+
+  const [ uploads, setUploads ] = React.useState(files);
   const classes = useStyles();
 
   async function uploadFile(id, data) {
     let formData = new FormData();
     Object.keys(data).forEach( key => formData.append(key, data[key]));
-
     fetch(`${API}/api/company/insurance/detail/${id}/file`, {
       method: 'POST',
       body: formData,
       headers: {
         Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
       }
-    });
+    }).then(response => response.json())
+    .then( json => {
+      if( json.status ){
+        setUploads([...files, json.data]);
+      }
+    } );
   }
 
   return (
@@ -140,10 +146,10 @@ const FolderList = ({ files, idDetail }) => {
     
       </Box>
       <List className={classes.section}>
-        {files.length === 0 ? (
+        {uploads.length === 0 ? (
           <Alert severity="warning">Without files...</Alert>
         ) : (
-          files.map(file => (
+          uploads.map(file => (
             <ListItem key={file.id}>
               <ListItemAvatar>
                 <Avatar>
