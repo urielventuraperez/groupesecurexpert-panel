@@ -69,6 +69,23 @@ const FolderList = ({ files, idDetail }) => {
     } );
   }
 
+  async function DeleteFile(id) {
+    fetch(`${API}/api/company/insurance/detail/file/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(LSTOKEN)}`
+      }
+    }).then(response => response.json())
+    .then( json => {
+      if( json.status ){
+        let newFiles = uploads.filter( file => {
+          return file.id != id
+        });
+        setUploads(newFiles);
+      }
+    } );
+  }
+
   return (
     <Container maxWidth={false} className={classes.root}>
       <Divider variant="middle" />
@@ -164,7 +181,7 @@ const FolderList = ({ files, idDetail }) => {
                 <IconButton edge="end" aria-label="update">
                   <EditIcon />
                 </IconButton>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton onClick={ () => DeleteFile(file.id) } edge="end" aria-label="delete">
                   <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>
