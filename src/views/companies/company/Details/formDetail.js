@@ -11,6 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import CustomSnackbar from 'src/components/Alert';
 import { API, LSTOKEN } from 'src/utils/environmets';
 import FormUploadFiles from './formUploadFiles';
+import FormDeductibles from './formDeductibles';
 
 const DetailSchema = Yup.object().shape({
   content: Yup.string()
@@ -152,6 +153,10 @@ const FormDetail = ({ detailId }) => {
       {
         detailData.title_detail_id === 7 &&
         <FormUploadFiles files = {detailData.files} idDetail={detailId} />
+      }
+      {
+        detailData.title_detail_id === 5 &&
+        <FormDeductibles deductibles={detailData.deductibles} idDetail={detailId} />
       }
       <CustomSnackbar open={alert.open} status={alert.status} text = {alert.text} />
     </Container>
